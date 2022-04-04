@@ -28,9 +28,6 @@ done < ".env"
 URI="postgres://$DB_USER:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME"
 
 # Run the scripts to insert data.
-psql ${URI} DROP TABLE passengerOrder;
-psql ${URI} DROP TABLE passengerDetail;
-psql ${URI} DROP TABLE driverOrder;
-psql ${URI} DROP TABLE driverDetail;
-psql ${URI} DROP TABLE userInfo;
+psql ${URI} -f sql/dropeverything.sql
+
 
