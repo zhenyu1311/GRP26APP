@@ -1,0 +1,114 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@800&display=swap');
+  body {
+    color: black;
+    text-align: center;
+    background-color: #FF8415 ;
+  }
+  h2 {
+        font-size: 50px;
+        font-family: 'Sora';
+        color: black;
+    }
+  .container {
+      max-width: 500px;
+      margin: 30px auto;
+  }
+  .form-wrap{
+      background: #fff;
+      padding: 15px 25px;
+      border-radius: 7px;
+  }
+  .form-wrap .form-group ::placeholder {
+      display: block;
+      color: #666;
+      padding-left: 10px;
+      font-family: 'futura';
+  }
+  .form-wrap .form-group input {
+      width : 100%;
+      padding: 10px;
+      padding-right: 2px;
+      padding-left: 2px;
+      padding-bottom: 10px;
+      border: #ddd 1px solid;
+      border-radius: 7px;
+      margin-bottom: 5px;
+  }
+  .form-wrap input[type="submit"]{
+      font-family: 'futura';
+      display: block;
+      width: 100%;
+      background: black;
+      color: white;
+      padding: 10px;
+      padding-left: 2px;
+      padding-right: 2px;       
+      border-radius: 7px;
+      margin-top: 20px;
+      cursor: pointer;
+
+  }
+  .form-wrap input[type="submit"]:hover {
+        background: #17706c;
+    }
+  a:hover {
+      color: #17706c;
+      text-decoration: underline;
+  }
+</style>
+{% load static %}
+<html>
+  <head>
+    <title>Update Activity</title>
+  </head>
+  <body>
+    <div class="container">
+    <div class="form-wrap">
+    <h2>Update Activity</h2>
+    <a href="/user_activity">Back to your activities</a>
+
+    <form method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        <input
+          class="form-control"
+          autofocus
+          type="text"
+          name="activity_name"
+          placeholder="Activity Name"
+        />
+      </div>
+      <div class="form-group">
+        <!-- Currently the type is still in text, should change to radio button -->
+        <input
+          class="form-control"
+          type="text"
+          name="category"
+          placeholder="Category"
+        />
+      </div>
+      <div class="form-group">
+        <input
+          class="form-control"
+          type="datetime-local"
+          name="start_date_time"
+        />
+      </div>
+      <div class="form-group">
+        <input
+          class="form-control"
+          type="text"
+          name="venue"
+          placeholder="Venue"
+        />
+      </div>
+      <div class="form-group">
+        <input class="form-control" type="number" name="capacity" />
+      </div>
+      <input class="btn btn-primary" type="submit" value="Update Activity" />
+    </form>
+  </div>
+  </div>
+  </body>
+</html>

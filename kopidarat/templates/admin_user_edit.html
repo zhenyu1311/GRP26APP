@@ -1,0 +1,128 @@
+{% load static %}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@800&display=swap');
+  body {
+      color: black;
+      text-align: center;
+      background-color: #FF8415 ;
+  }
+  .container {
+      margin: 30px auto;
+      max-width: 400px;
+      padding: 0px;
+  
+  }
+  
+  h2 {
+      font-size: 70px;
+      font-family: 'Sora';
+  }
+  
+  .form-wrap {
+      background: #fff;
+      padding: 15px 25px;
+      border-radius: 7px;
+  }
+  .form-wrap .form-group ::placeholder {
+      display: block;
+      color: #666;
+      padding-left: 10px;
+      font-family: 'futura';
+  }
+  .form-wrap .form-group input {
+      width : 100%;
+      padding: 10px;
+      padding-right: 2px;
+      padding-left: 2px;
+      padding-bottom: 10px;
+      border: #ddd 1px solid;
+      border-radius: 7px;
+      margin-bottom: 5px;
+  }
+  .form-wrap input[type="submit"]{
+      font-family: 'futura';
+      display: block;
+      width: 100%;
+      background: black;
+      color: white;
+      padding: 10px;
+      padding-left: 2px;
+      padding-right: 2px;       
+      border-radius: 7px;
+      margin-top: 20px;
+      cursor: pointer;
+  }
+  .form-wrap input[type="submit"]:hover {
+      background: #17706c;
+  }
+  a:hover {
+      color: #17706c;
+      text-decoration: underline;
+  }
+</style>
+<html>
+  <head>
+    <title>Update User</title>
+  </head>
+<div class="container">
+<div class="form-wrap">
+  <body>
+    <h2>Update User</h2>
+    <a href="/admin_user">Back to the list of users</a>
+
+    <form method="POST">
+      {% csrf_token %}
+      Full Name
+      <div class="form-group">
+        <input
+          class="form-control"
+          autofocus
+          type="text"
+          name="full_name"
+          value="{{obj.0}}"
+        />
+      </div>
+      Username
+      <div class="form-group">
+        
+        <input
+          class="form-control"
+          autofocus
+          type="text"
+          name="username"
+          value="{{obj.1}}"
+        />
+      </div>
+      Phone Number
+      <div class="form-group">
+        <input
+          class="form-control"
+          type="text"
+          name="phone_number"
+          value="{{obj.3}}"
+        />
+      </div>
+      Password
+      <div class="form-group">
+        <input
+          class="form-control"
+          type="text"
+          name="password"
+          value="{{obj.4}}"
+        />
+      </div>
+      Type
+      <div class="form-group">
+        <input
+          class="form-control"
+          type="text"
+          name="type"
+          value="{{obj.5}}"
+        />
+      </div>
+      <input class="btn btn-primary" type="submit" value="Update User" />
+    </form>
+  </body>
+</div>
+</div>
+</html>

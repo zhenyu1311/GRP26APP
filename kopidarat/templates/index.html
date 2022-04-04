@@ -1,0 +1,136 @@
+{% load static %}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@800&display=swap');
+  body {
+    color: black;
+    text-align: center;
+    background-color: #FF8415;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: center;
+  }
+
+  h1 {
+    font-family: 'Sora';
+    font-size: 70px;
+    margin: 50px;
+  }
+
+  h2 {
+    font-family: 'futura';
+    color: black;
+  }
+
+  a {
+    margin-bottom: 10px;
+  }
+
+  option {
+    width: 100%;
+  }
+</style>
+
+<html>
+  <head>
+    <title> Welcome to KopiDarat! </title>
+  </head>
+  <body>
+    {% if message %}
+    <div id="overlay"></div>
+    <div class="popup">
+      <div class="popupcontent">{{message}}</div>
+      <a
+        class="button"
+        href="{% url 'index' %}"
+        class="text-decoration-none"
+      >Back To Main Page</a>
+    </div>
+    {% endif %}
+
+    <h1>Hello {{full_name}}!</h1>  
+
+    <br/><br>
+    <a href="{% url 'create_activity' %}"> New Activity </a>
+    <br/><br>
+    <a href="{% url 'report' %}"> New Report </a>
+    <br/><br>
+    <a href="{% url 'user_activity' %}"> Your Activities </a>
+    <br/><br>
+    <a href="{% url 'logout' %}"> Logout </a>
+    <br/><br>
+    
+    <h2> Recommended For You</h2>
+    <br/>
+    <table border=1>
+      <thead>
+          <th> Activity Name </th>
+          <th> Inviter </th>
+          <th> Category </th>
+          <th> Start Date Time </th>
+          <th> Venue </th>
+          <th> Joined </th>
+          <th> Capacity </th>
+          <th> Join </th>
+      </thead>
+      {% for activity in recommended_activities %}
+      <tr>
+        <td> {{ activity.3 }}</td>
+        <td> {{ activity.1 }}</td>
+        <td> {{ activity.2 }}</td>
+        <td> {{ activity.4 }}</td>
+        <td> {{ activity.5 }}</td>
+        <td> {{ activity.6 }}</td>
+        <td> {{ activity.7 }}</td>
+        <td> <a class='button' href="{% url 'join' activity.0 %}" class="text-decoration-none">Join</a> </td>
+      </tr>
+      {% endfor %}
+    </table>
+    <br/>
+
+
+    <h2> Available Activities </h2>
+    <form action="{% url 'index' %}" method="post">
+      {% csrf_token %}
+      <label for="category_id" class="control-label requiredField">Categories (multi-select with ctrl)</label> 
+      <div class="controls"><select name="categories" id="categories" multiple size="10">
+        {% for category in categories %}
+        <option value= "{{category.0}}" >{{category.0}}</option>
+        {% endfor %} 
+        </select> </div>
+        <label for="period_id" class="control-label requiredField">Show Activities Within</label> 
+      <div class="controls"><select name="display_period" id="display_period" multiple size="1">
+        <option value= "1_week" >1 Week</option>
+        <option value= "1_month" >1 Month</option>
+        </select> </div>
+      <button type="submit">Apply Filter</button>
+      <a href = "{% url 'index' %}">Clear Selections</a>
+      </form>
+    </div>
+    
+    <table border=1>
+      <thead>
+          <th> Activity Name </th>
+          <th> Inviter </th>
+          <th> Category </th>
+          <th> Start Date Time </th>
+          <th> Venue </th>
+          <th> Joined </th>
+          <th> Capacity </th>
+          <th> Join </th>
+      </thead>
+      {% for activity in records %}
+      <tr>
+        <td> {{ activity.3 }}</td>
+        <td> {{ activity.1 }}</td>
+        <td> {{ activity.2 }}</td>
+        <td> {{ activity.4 }}</td>
+        <td> {{ activity.5 }}</td>
+        <td> {{ activity.6 }}</td>
+        <td> {{ activity.7 }}</td>
+        <td> <a class='button' href="{% url 'join' activity.0 %}" class="text-decoration-none">Join</a> </td>
+      </tr>
+      {% endfor %}
+  </body>
+</html>

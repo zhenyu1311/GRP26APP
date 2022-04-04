@@ -1,0 +1,7 @@
+django
+django-heroku
+django-crispy-forms
+psycopg2
+gunicorn
+python-decouple
+python-dateutil

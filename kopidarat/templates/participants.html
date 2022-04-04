@@ -1,0 +1,34 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@800&display=swap');
+  body {
+      color: black;
+      text-align: center;
+      background-color: #FF8415 ;
+  }
+</style>
+<html>
+  <head>
+    <title>{{activity_name}}</title>
+  </head>
+  <body>
+    <h2>People joining this activity</h2>
+    <br/><br>
+    <table border="1">
+      <thead>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone Number</th>
+      </thead>
+      {% for participant in participants %}
+      <tr>
+        <td>{{ participant.0 }}</td>
+        <td>{{ participant.1 }}</td>
+        <td>{{ participant.2 }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    <br />
+    <br />
+    <a href="/user_activity"> Back to Your Activities</a>
+  </body>
+</html>

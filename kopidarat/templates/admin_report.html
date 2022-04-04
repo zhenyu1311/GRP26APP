@@ -1,0 +1,70 @@
+{% load static %}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@800&display=swap');
+  body {
+    color: black;
+    text-align: center;
+    background-color: #FF8415 ;
+  }
+
+  .content-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+  }
+
+  .content-table thead tr {
+    background-color: black;
+    color: #ffff;
+    text-align : center;
+    font-weight: bold;
+
+  }
+
+  .content-table td {
+    padding : 12px 15px;
+  }
+
+  .content-table tbody tr {
+    border-bottom: 1px solid #17706c;
+    color: white;
+    background-color: #17706c
+  }
+</style>
+
+<html>
+  <body>
+    <div class="content-table">
+      <h2>List of reports made by users</h2>
+      <br />
+      <a href="/admin_index"> Back to Main Page </a>
+      <table border="1">
+        <thead>
+          <th>Submitter</th>
+          <th>Timestamp</th>
+          <th>Reported User</th>
+          <th>Comment</th>
+          <th>Severity</th>
+          <th>Delete Report</th>
+        </thead>
+        {% for report in list_of_reports %}
+        <tr>
+          <td>{{ report.0 }}</td>
+          <td>{{ report.1 }}</td>
+          <td>{{ report.2 }}</td>
+          <td>{{ report.3 }}</td>
+          <td>{{ report.4 }}</td>
+          <td>
+            <a
+              class="button"
+              href="admin_report_delete/{{ report.0 }}/{{ report.1 }}"
+              class="text-decoration-none"
+            >
+              Delete
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </body>
+</html>

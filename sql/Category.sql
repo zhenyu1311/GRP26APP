@@ -1,0 +1,9 @@
+INSERT INTO category VALUES ('Dining');
+INSERT INTO category VALUES ('Games');
+INSERT INTO category VALUES ('Outdoor');
+INSERT INTO category VALUES ('Sports');
+INSERT INTO category VALUES ('Drinking');
+INSERT INTO category VALUES ('Art');
+INSERT INTO category VALUES ('Museum');
+INSERT INTO category VALUES ('Others');
+INSERT INTO category VALUES ('Movies');

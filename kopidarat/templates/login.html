@@ -1,0 +1,93 @@
+{% block body %}
+<style>
+      @import url('https://fonts.googleapis.com/css2?family=Sora:wght@800&display=swap');
+      body {
+        color: black;
+        text-align: center;
+        background-color: #FF8415;
+      }
+    h2 {
+      font-size: 70px;
+      font-family: 'Sora';
+    }
+    .container {
+        margin: 30px auto;
+        max-width: 400px;
+        padding: 20px;
+
+    }
+    .form-wrap {
+        background: #fff;
+        padding: 10px 25px;
+        border-radius: 7px;
+    }
+    .form-wrap .form-group label {
+        display: block;
+        color: #666;
+    }
+    .form-wrap .form-group input {
+        width : 100%;
+        padding: 10px;
+        padding-right: 2px;
+        padding-left: 2px;
+        padding-bottom: 10px;
+        border: #ddd 1px solid;
+        border-radius: 7px;
+    }
+    .form-wrap input[type="submit"]{
+        font-family: 'futura';
+        display: block;
+        width: 100%;
+        background: black;
+        color: white;
+        padding: 10px;
+        padding-left: 2px;
+        padding-right: 2px;       
+        border-radius: 7px;
+        margin-top: 20px;
+        cursor: pointer;
+    }
+    .form-wrap input[type="submit"]:hover {
+        background: #17706c;
+    }
+    a:hover {
+        color: #17706c;
+        text-decoration: underline;
+    }
+</style>
+<div class="container">
+  <div class="form-wrap">
+    <h2>Login</h2>
+
+    {% if message %}
+    <div>{{ message }}</div>
+    {% endif %}
+
+    <form action="{% url 'login' %}" method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <input
+          autofocus
+          class="form-control"
+          type="text"
+          name="user_id"
+          placeholder="Email or Username"
+        />
+      </div>
+      <br></br>
+      <div class="form-group">
+        <input
+          class="form-control"
+          type="password"
+          name="password"
+          placeholder="Password"
+        />
+      </div>
+      <input class="btn btn-primary" type="submit" value="Login" />
+    </form>
+    <br></br>
+    <div><a href="{% url 'forget_password' %}">Forgot your password?</a></div>
+    <div><a href="{% url 'register' %}">Don't have an account?</a></div>
+</div>
+</div>
+{% endblock %}
