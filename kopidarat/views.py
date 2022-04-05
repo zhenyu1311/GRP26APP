@@ -25,7 +25,7 @@ def become_admin(request):
 
                 return redirect('index')
             except IntegrityError:
-                status = 'Sorry you cannot become an admin, please contact admin'
+                status = 'This username already requested'
   
     context['message'] = status
     return render(request, "become_admin.html", context)
