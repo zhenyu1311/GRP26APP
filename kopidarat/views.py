@@ -460,7 +460,7 @@ def admin_index(request):
 
         with connection.cursor() as cursor:
             
-            curosr.execute(
+            cursor.execute(
                 'SELECT username,reason FROM become_admin')
             list_of_requests = cursor.fetchall()
 
