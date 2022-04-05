@@ -461,7 +461,7 @@ def admin_index(request):
         with connection.cursor() as cursor:
             
             cursor.execute(
-                'SELECT username,reason FROM requests as username,reason')
+                'SELECT username,reason FROM requests')
             list_of_requests = cursor.fetchall()
 
             # Select the top 5 most active users (identified by usernames) based on the number of activities joined
