@@ -1,6 +1,40 @@
 {% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'admin_index.css' %}" />
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@800&display=swap');
+body {
+    color: black;
+    text-align: center;
+    background-color: #FF8415 ;
+    width: 100%;
+}
+.content-table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  min-width: 400px;
+}
 
+.content-table thead tr {
+  background-color: black;
+  color: #ffff;
+  text-align : center;
+  font-weight: bold;
+
+}
+
+.content-table td {
+  padding : 12px 15px;
+}
+
+.content-table tbody tr {
+  border-bottom: 1px solid #17706c;
+  color: white;
+  background-color: #17706c;
+}
+
+table,tr,td {
+  border: none;
+}
+</style>
 <html>
   <head>
     <title>Welcome to KopiDarat</title>
@@ -29,51 +63,6 @@
       {% endfor %}
     </table>
     </br>
-    <h3> Top 5 inactive users </h3>
-      <table>
-        <thead>
-          <th> Username </th>
-          <th> Joined Activities </th>
-        </thead>
-        {% for user in list_of_inactive_users %}
-        <tr>
-          <td>{{ user.0 }}</td>
-          <td>{{ user.1 }}</td>
-        </tr>
-        {% endfor %}
-      </table>
-    </br>
-  <h3> Top 5 reviewed activities </h3>
-    <table>
-      <thead>
-        <th> Activity ID </th>
-        <th> Activity Name </th>
-        <th> Number of Reviews </th>
-      </thead>
-      {% for review in list_of_reviewed_activities %}
-      <tr>
-        <td>{{ review.0 }}</td>
-        <td>{{ review.1 }}</td>
-        <td>{{ review.2 }}</td>
-      </tr>
-      {% endfor %}
-    </table>
-  </br>
-  <h3> Top 5 rated activities </h3>
-  <table border=1>
-    <thead>
-      <th> Activity ID </th>
-      <th> Activity Name </th>
-      <th> Number of Reviews </th>
-    </thead>
-    {% for review in list_of_rated_activities %}
-    <tr>
-      <td>{{ review.0 }}</td>
-      <td>{{ review.1 }}</td>
-      <td>{{ review.2 }}</td>
-    </tr>
-    {% endfor %}
-  </table>
 </br>
   <h3> Top 5 most reported users (with severity Medium or higher) </h3>
     <table>
