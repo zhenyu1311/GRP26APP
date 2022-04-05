@@ -73,5 +73,6 @@ CREATE TABLE IF NOT EXISTS random_report (
 ); 
 
 CREATE TABLE IF NOT EXISTS requests(
-	requester VARCHAR(64)  ,
-  reason VARCHAR(128));
+	username VARCHAR(64) PRIMARY KEY ,
+	reason VARCHAR(128)
+);
