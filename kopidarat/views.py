@@ -23,7 +23,7 @@ def become_admin(request):
                 request.session["username"] = request.POST['username']
                 request.session["reason"] = request.POST['reason']
 
-                return redirect('admin_index')
+                return redirect('index')
             except IntegrityError:
                 status = 'Sorry you cannot become an admin, please contact admin'
   
