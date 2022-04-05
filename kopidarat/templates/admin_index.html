@@ -49,31 +49,14 @@ table,tr,td {
     <a href="logout"> Logout </a>
     <br /><br />
     <div class="content-table">
-    <h3> Top 5 active users </h3>
+  <h3>  Become an admin request  </h3>
     <table>
       <thead>
         <th> Username </th>
-        <th> Joined Activities </th>
-      </thead>
-      {% for user in list_of_active_users %}
-      <tr>
-        <td>{{ user.0 }}</td>
-        <td>{{ user.1 }}</td>
-      </tr>
-      {% endfor %}
-    </table>
-    </br>
-</br>
-  <h3> Top 5 most reported users (with severity Medium or higher) </h3>
-    <table>
-      <thead>
-        <th> Username </th>
-        <th> Number of Reports </th>
       </thead>
       {% for user in list_of_user_reports %}
       <tr>
         <td>{{ user.0 }}</td>
-        <td>{{ user.1 }}</td>
       </tr>
       {% endfor %}
     </table>
