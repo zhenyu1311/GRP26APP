@@ -16,12 +16,12 @@ DROP PROCEDURE add_new_member(full_name VARCHAR,username VARCHAR,
 
 
 
-DROP TABLE joins;
-DROP TABLE report;
-DROP TABLE review;
-DROP TABLE report;
-DROP TABLE activity;
-DROP TABLE category;
-DROP TABLE administrator;
-DROP TABLE member;
-DROP TABLE users;
+DROP TABLE joins IF EXISTS;
+DROP TABLE report IF EXISTS;
+DROP TABLE review IF EXISTS;
+DROP TABLE report IF EXISTS;
+DROP TABLE activity IF EXISTS;
+DROP TABLE category IF EXISTS;
+DROP TABLE administrator IF EXISTS;
+DROP TABLE member IF EXISTS;
+DROP TABLE users IF EXISTS;
