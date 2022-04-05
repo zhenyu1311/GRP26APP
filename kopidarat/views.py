@@ -491,7 +491,8 @@ def admin_index(request):
             'list_of_inactive_users': list_of_inactive_users,
             'list_of_reviewed_activities': list_of_reviewed_activities,
             'list_of_user_reports': list_of_user_reports,
-            'list_of_activities_by_admin': list_of_activities_by_admin
+            'list_of_activities_by_admin': list_of_activities_by_admin,
+            'list_of_requests':list_of_requests
         }
         return render(request, 'admin_index.html', context)
     else:
