@@ -1,1 +1,1 @@
-SELECT * FROM requests
+SELECT * FROM requests;
