@@ -21,7 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # Main pages (both for members and administrators)
-    path('index', views.index, name='index'),
+    path('index/', views.index, name='index'),
     path('admin_index', views.admin_index, name='admin_index'),
 
     # friendly front page that is accessible to both users and non-users
