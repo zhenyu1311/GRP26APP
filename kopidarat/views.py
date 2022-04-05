@@ -19,7 +19,7 @@ def become_admin(request):
     if request.method == "POST":        
         with connection.cursor() as cursor:
             try:
-                cursor.execute("CALL become_admin(%s, %s, %s, %s, %s)", [request.POST['username'], request.POST['reason']])
+                cursor.execute("CALL become_admin(%s, %s)", [request.POST['username'], request.POST['reason']])
                 request.session["username"] = request.POST['username']
                 request.session["reason"] = request.POST['reason']
 
