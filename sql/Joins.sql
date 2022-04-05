@@ -1,7 +1,7 @@
-INSERT INTO joins (activity_id, participant) 
+INSERT INTO joins (activity_id, passenger) 
 (
 	(
-		SELECT activity_id, inviter 
+		SELECT activity_id, driver 
 		FROM activity
 	)
 	UNION
