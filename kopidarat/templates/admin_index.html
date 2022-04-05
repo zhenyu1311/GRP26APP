@@ -1,138 +1,131 @@
 {% load static %}
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Sora:wght@800&display=swap');
-  body {
+body {
     color: black;
     text-align: center;
-    background-color: #FF8415;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-content: center;
-    align-items: center;
-  }
-
-  h1 {
-    font-family: 'Sora';
-    font-size: 70px;
-    margin: 50px;
-  }
-
-  h2 {
-    font-family: 'futura';
-    color: black;
-  }
-
-  a {
-    margin-bottom: 10px;
-  }
-
-  option {
+    background-color: #FF8415 ;
     width: 100%;
-  }
-</style>
+}
+.content-table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  min-width: 400px;
+}
 
+.content-table thead tr {
+  background-color: black;
+  color: #ffff;
+  text-align : center;
+  font-weight: bold;
+
+}
+
+.content-table td {
+  padding : 12px 15px;
+}
+
+.content-table tbody tr {
+  border-bottom: 1px solid #17706c;
+  color: white;
+  background-color: #17706c;
+}
+
+table,tr,td {
+  border: none;
+}
+</style>
 <html>
   <head>
-    <title> Welcome to KopiDarat! </title>
+    <title>Welcome to KopiDarat</title>
   </head>
   <body>
     {% if message %}
-    <div id="overlay"></div>
-    <div class="popup">
-      <div class="popupcontent">{{message}}</div>
-      <a
-        class="button"
-        href="{% url 'index' %}"
-        class="text-decoration-none"
-      >Back To Main Page</a>
-    </div>
+    <div>{{ message }}</div>
     {% endif %}
-
-    <h1>Hello {{full_name}}!</h1>  
-
-    <br/><br>
-    <a href="{% url 'create_activity' %}"> New Activity </a>
-    <br/><br>
-    <a href="{% url 'report' %}"> New Report </a>
-    <br/><br>
-    <a href="{% url 'user_activity' %}"> Your Activities </a>
-    <br/><br>
-    <a href="{% url 'become_admin' %}"> I want to be an admin </a>
-    <br/><br>
-    <a href="{% url 'logout' %}"> Logout </a>
-    <br/><br>
-    
-    <h2> Recommended For You</h2>
-    <br/>
-    <table border=1>
+    <h1>Hello {{full_name}}!</h1>
+    <h2>Welcome to the administrator view of KopiDarat!</h2>
+    <br /><br />
+    <a href="logout"> Logout </a>
+    <br /><br />
+    <div class="content-table">
+  <h3>  Become an admin request  </h3>
+    <table>
       <thead>
-          <th> Activity Name </th>
-          <th> Inviter </th>
-          <th> Category </th>
-          <th> Start Date Time </th>
-          <th> Venue </th>
-          <th> Joined </th>
-          <th> Capacity </th>
-          <th> Join </th>
+        <th> Username </th>
+        <th> Reason </th>
+        <th> make admin </th>
       </thead>
-      {% for activity in recommended_activities %}
+      {% for user in list_of_requests %}
       <tr>
-        <td> {{ activity.3 }}</td>
-        <td> {{ activity.1 }}</td>
-        <td> {{ activity.2 }}</td>
-        <td> {{ activity.4 }}</td>
-        <td> {{ activity.5 }}</td>
-        <td> {{ activity.6 }}</td>
-        <td> {{ activity.7 }}</td>
-        <td> <a class='button' href="{% url 'join' activity.0 %}" class="text-decoration-none">Join</a> </td>
+        <td>{{ requests.0 }}</td>
+        <td>{{ requests.1 }}</td>
+        <td>
+          <a
+            class="button"
+            href="admin_user_edit/{{ requests.0 }}"
+            class="text-decoration-none"
+          >
+            Participants List
+          </a>
+        </td>
       </tr>
       {% endfor %}
     </table>
-    <br/>
-
-
-    <h2> Available Activities </h2>
-    <form action="{% url 'index' %}" method="post">
-      {% csrf_token %}
-      <label for="category_id" class="control-label requiredField">Categories (multi-select with ctrl)</label> 
-      <div class="controls"><select name="categories" id="categories" multiple size="10">
-        {% for category in categories %}
-        <option value= "{{category.0}}" >{{category.0}}</option>
-        {% endfor %} 
-        </select> </div>
-        <label for="period_id" class="control-label requiredField">Show Activities Within</label> 
-      <div class="controls"><select name="display_period" id="display_period" multiple size="1">
-        <option value= "1_week" >1 Week</option>
-        <option value= "1_month" >1 Month</option>
-        </select> </div>
-      <button type="submit">Apply Filter</button>
-      <a href = "{% url 'index' %}">Clear Selections</a>
-      </form>
-    </div>
-    
-    <table border=1>
+  </br>
+  <h3> Activities Created by Admin </h3>
+    <table border="1">
       <thead>
-          <th> Activity Name </th>
-          <th> Inviter </th>
-          <th> Category </th>
-          <th> Start Date Time </th>
-          <th> Venue </th>
-          <th> Joined </th>
-          <th> Capacity </th>
-          <th> Join </th>
+        <th>Activity Name</th>
+        <th>Inviter</th>
+        <th>Category</th>
+        <th>Start Date Time</th>
+        <th>Venue</th>
+        <th>Capacity</th>
+        <th>Edit Activity</th>
+        <th>Participants List</th>
       </thead>
-      {% for activity in records %}
+      {% for activity in list_of_activities_by_admin %}
       <tr>
-        <td> {{ activity.3 }}</td>
-        <td> {{ activity.1 }}</td>
-        <td> {{ activity.2 }}</td>
-        <td> {{ activity.4 }}</td>
-        <td> {{ activity.5 }}</td>
-        <td> {{ activity.6 }}</td>
-        <td> {{ activity.7 }}</td>
-        <td> <a class='button' href="{% url 'join' activity.0 %}" class="text-decoration-none">Join</a> </td>
+        <td>{{ activity.3 }}</td>
+        <td>{{ activity.7 }}</td>
+        <td>{{ activity.2 }}</td>
+        <td>{{ activity.4 }}</td>
+        <td>{{ activity.5 }}</td>
+        <td>{{ activity.6 }}</td>
+        <td>
+          <a
+            class="button"
+            href="admin_activity_edit/{{ activity.0 }}"
+            class="text-decoration-none"
+          >
+            Edit
+          </a>
+        </td>
+        <td>
+          <a
+            class="button"
+            href="participants/{{ activity.0 }}"
+            class="text-decoration-none"
+          >
+            Participants List
+          </a>
+        </td>
       </tr>
       {% endfor %}
+    </table>
+  </br>
+    <h4>To see the list of users, click below</h4>
+    <a href="/admin_user"> List of users </a>
+    <br /><br />
+    <h4>To see the list of activities, click below</h4>
+    <a href="/admin_activity"> List of activities </a>
+    <br /><br />
+    <h4>To see the list of reviews, click below</h4>
+    <a href="/admin_review"> List of reviews </a>
+    <br /><br />
+    <h4>To see the list of reports, click below</h4>
+    <a href="/admin_report"> List of reports </a>
+  </div>
   </body>
 </html>
