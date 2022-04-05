@@ -71,3 +71,6 @@ CREATE TABLE IF NOT EXISTS random_comments (
 CREATE TABLE IF NOT EXISTS random_report (
 	comment VARCHAR(4096) PRIMARY KEY
 ); 
+
+CREATE TABLE IF NOT EXISTS become_admin(
+	requesting_user VARCHAR(64) REFERENCES users(email) PRIMARY KEY;
