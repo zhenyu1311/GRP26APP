@@ -37,14 +37,14 @@ table,tr,td {
 </style>
 <html>
   <head>
-    <title>Welcome to KopiDarat</title>
+    <title>THIS IS ADMIN PAGE</title>
   </head>
   <body>
     {% if message %}
     <div>{{ message }}</div>
     {% endif %}
-    <h1>Hello {{full_name}}!</h1>
-    <h2>Welcome to the administrator view of KopiDarat!</h2>
+    <h1>Check admin request and manage account detail</h1>
+    <h2></h2>
     <br /><br />
     <a href="logout"> Logout </a>
     <br /><br />
@@ -108,17 +108,17 @@ table,tr,td {
             href="participants/{{ activity.0 }}"
             class="text-decoration-none"
           >
-            Participants List
+            passengers
           </a>
         </td>
       </tr>
       {% endfor %}
     </table>
   </br>
-    <h4>To see the list of users, click below</h4>
+    <h4>User List</h4>
     <a href="/admin_user"> List of users </a>
     <br /><br />
-    <h4>To see the list of activities, click below</h4>
+    <h4>Journey list, click below</h4>
     <a href="/admin_activity"> List of activities </a>
     <br /><br />
     <h4>To see the list of reviews, click below</h4>
