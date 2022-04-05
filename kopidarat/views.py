@@ -12,6 +12,23 @@ import datetime
 
 # View Functions for main pages for the member's side of the website
 
+def become_admin(request):
+    context = {}
+    status = ''
+
+    if request.method == "POST":        
+        with connection.cursor() as cursor:
+            try:
+                cursor.execute("CALL become_admin(%s, %s, %s, %s, %s)", [request.POST['username'], request.POST['reason']])
+                request.session["username"] = request.POST['username']
+                request.session["reason"] = request.POST['reason']
+
+                return redirect('admin_index')
+            except IntegrityError:
+                status = 'Sorry you cannot become an admin, please contact admin'
+  
+    context['message'] = status
+    return render(request, "become_admin.html", context)
 
 def index(request,*kwargs):
     '''
