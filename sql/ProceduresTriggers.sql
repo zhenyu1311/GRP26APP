@@ -10,6 +10,18 @@ END
 $$ LANGUAGE plpgsql;
 
 
+CREATE OR REPLACE PROCEDURE add_new_member(full_name VARCHAR,
+										   username VARCHAR,
+										   email VARCHAR,
+										   phone_number VARCHAR,
+										   password VARCHAR) AS $$
+BEGIN
+	INSERT INTO users VALUES (full_name,username,email,phone_number,password,'member');
+	INSERT INTO member VALUES (email);
+END
+$$ LANGUAGE plpgsql;
+
+
 
 CREATE OR REPLACE PROCEDURE create_new_activity(u_email VARCHAR,
 											   u_category VARCHAR,
