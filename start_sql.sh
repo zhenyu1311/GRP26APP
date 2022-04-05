@@ -28,7 +28,5 @@ done < ".env"
 URI="postgres://$DB_USER:$DB_PASSWORD@$DB_HOST:$DB_PORT/$DB_NAME"
 
 # Run the scripts to insert data.
-psql ${URI} -f sql/dropeverthing.sql
-psql ${URI} -f sql/DropTablesTriggers.sql
 psql ${URI} -f sql/DeleteTableContents.sql
 
