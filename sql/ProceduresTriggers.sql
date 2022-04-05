@@ -107,7 +107,13 @@ FOR EACH ROW
 EXECUTE FUNCTION check_review_func();
 
 
-							  
+CREATE OR REPLACE PROCEDURE become_admin(
+										   username VARCHAR,
+										   reason VARCHAR) AS $$
+BEGIN
+	INSERT INTO requests VALUES (username,reason);
+END
+$$ LANGUAGE plpgsql;							  
 							  
 							  
 							  
