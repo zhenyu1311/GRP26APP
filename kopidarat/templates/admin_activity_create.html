@@ -1,11 +1,11 @@
 {% load static %}
 <html>
   <head>
-    <title>Create Activity</title>
+    <title>Create Ride</title>
   </head>
   <body>
-    <h2>Add New Activity</h2>
-    <a href="admin_activity">Back to list of activities</a>
+    <h2>Add New Ride</h2>
+    <a href="admin_activity">Back to list of rides</a>
 
     <form action="{% url 'create_activity' %}" method="post">
       {% csrf_token %}
@@ -16,7 +16,7 @@
           autofocus
           type="text"
           name="activity_name"
-          placeholder="Activity Name"
+          placeholder="Start Point Name"
         />
       </div>
       Category
@@ -53,7 +53,7 @@
       <div class="form-group">
         <input class="form-control" type="number" name="capacity" min="2" max ="6" placeholder="Capacity (between 2 to 6)"/>
       </div>
-      <input class="btn btn-primary" type="submit" value="Create Activity" />
+      <input class="btn btn-primary" type="submit" value="Create Ride" />
     </form>
   </body>
 </html>
