@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS activity (
   start_date_time TIMESTAMP NOT NULL,
   destination VARCHAR(128) NOT NULL,
   price NUMERIC NOT NULL,
-  capacity INTEGER NOT NULL CHECK (capacity >= 2 AND capacity <= 6)
+  capacity INTEGER NOT NULL CHECK (capacity >= 1 AND capacity <= 6)
 );
 
 CREATE TABLE IF NOT EXISTS joins (
