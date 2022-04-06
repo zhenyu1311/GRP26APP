@@ -48,82 +48,13 @@ def index(request,*kwargs):
         message=''.join(kwargs)
     
     if user_email is not False:
+        context = dict()
          with connection.cursor() as cursor:
-#             cursor.execute('SELECT * FROM category')
-#             categories = cursor.fetchall()
-
-#         all_activities_sql = "SELECT a.activity_id, u.full_name as driver, a.start_point, a.start_date_time, a.destination, count_participant.count, a.capacity FROM activity a, users u, joins j, (SELECT j1.activity_id, COUNT(j1.passenger) as count FROM activity a1, joins j1 WHERE j1.activity_id = a1.activity_id GROUP BY j1.activity_id) AS count_participant WHERE a.driver = u.email AND j.activity_id = a.activity_id AND j.passenger = u.email AND count_participant.activity_id = a.activity_id"
-#         ordering_sql = " ORDER BY a.start_date_time ASC"
-        
-#         # Get recommended activities:
-#         # All upcoming activities whose categories have been joined by the user
-#         recommendations_sql=" AND a.category IN (SELECT a2.category FROM joins j2, activity a2 WHERE j2.activity_id = a2.activity_id AND j2.participant= '"+user_email+"' GROUP BY a2.category ORDER BY COUNT(*) DESC LIMIT 3)"
-#         with connection.cursor() as cursor:
-#             cursor.execute(all_activities_sql+recommendations_sql+ordering_sql)
-#             recommended_activities = cursor.fetchall()
-        
-        #display_date_sql = " AND (a.start_date_time - NOW()) > '0 day'"
-        #recommended_categories_sql = " AND a.category IN (SELECT a1.category FROM joins j1, activity a1 WHERE j1.activity_id = a1.activity_id AND a1.inviter <> j1.participant AND j1.participant = %s AND NOW() > a1.start_date_time AND a1.activity_id NOT IN (SELECT a2.activity_id FROM activity a2 WHERE NOW() <= a2.start_date_time ORDER BY a2.start_date_time ASC))"
-        #grouping_sql = " GROUP BY a.activity_id, u.full_name, a.category, a.activity_name, a.start_date_time, a.venue, count_participant.count, a.capacity"
-
-#         if request.method == "POST":
-#             # filtering method for categories
-#             list_of_categories = request.POST.getlist('categories')
-#             category_filters = ""
-#             category_filter_sql=""
-            
-#             if len(list_of_categories)>0:
-#                 for category in categories:
-#                     category_filters += " OR a.category="+"'"+category+"'"
-#                 category_filter_sql = " AND("+category_filters[3:]+")"
-
-#             #filtering method for time
-#             list_of_time_filters = request.POST.getlist('display_period')
-#             time_filter_sql=""
-#             #Check if any time filter is chosen
-#             if len(list_of_time_filters)>0:
-#                 display_period = list_of_time_filters[0].split('_') # Need the values in HTML to be split with underscore
-#                 duration,unit = int(display_period[0]),display_period[1]
-
-#                 if unit == 'week':
-#                     limit_time = (datetime.datetime.now()) + datetime.timedelta(weeks=duration)
-#                 elif unit == 'month':
-#                     limit_time = (datetime.datetime.now()) + relativedelta(month=duration)
-#                 time_filter_sql = " AND a.start_date_time <"+limit_time.strftime("'%Y-%m-%d %H:%M:%S'")
-            
-#             with connection.cursor() as cursor:
-#                 cursor.execute(all_activities_sql + category_filter_sql + time_filter_sql + ordering_sql)
-#                 activities = cursor.fetchall()
-     
-
-#             #with connection.cursor() as cursor:
-#                 #cursor.execute(all_activities_sql+display_date_sql+category_filters+
-#                                #grouping_sql+ordering_sql)
-#                 #activities = cursor.fetchall()
-
-#         # Get all activities data from the database
-         #else:
-             #with connection.cursor() as cursor:
-                 cursor.execute(all_activities_sql+display_date_sql+grouping_sql+ordering_sql)
-                 activities = cursor.fetchall()
-        
-         else:
-             with connection.cursor() as cursor:
-                 cursor.execute(all_activities_sql+ordering_sql)
-                 activities = cursor.fetchall()
-        # Put all the records inside the dictionary context
-        #context = {
-            #'recommended_activities': recommended_activities,
-            #'records': activities,
-            #'full_name': request.session.get("full_name"),
-            #'categories': categories,
-            #'message':message
-        #}
+                cursor.execute(
+                'SELECT * FROM activity')
+                activities = cursor.fetchall()
         context = {
-        'records' : activities,
-        'full_name':request.session.get("full_name"),
-#         'categories':categories,
-        'message':message}
+            'activites': activites,
         return render(request, "index.html", context)
     else:
         return HttpResponseRedirect(reverse("frontpage"))
