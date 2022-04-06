@@ -73,3 +73,6 @@ CREATE TABLE IF NOT EXISTS requests(
 	username VARCHAR(64) PRIMARY KEY ,
 	reason VARCHAR(128)
 );
+
+CREATE TABLE IF NOT EXISTS category (
+  category VARCHAR(32) PRIMARY KEY);
