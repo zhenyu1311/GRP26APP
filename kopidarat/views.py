@@ -101,8 +101,8 @@ def index(request,*kwargs):
             #'message':message
         #}
 #        context = {}
-        'records' : activities,
-        'full_name':request.session.get("full_name"),
+#        'records' : activities,
+   #     'full_name':request.session.get("full_name"),
 #         'categories':categories,
  #       'message':message}
         return render(request, "index.html", context)
