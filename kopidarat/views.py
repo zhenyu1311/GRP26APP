@@ -34,7 +34,7 @@ def index(request,*kwargs):
                 activities = cursor.fetchall()
                 ordering_sql = " ORDER BY a.start_date_time ASC"
                 context={'records':activites}
-        return render(request, "index.html", context)
+                return render(request, "index.html", context)
     else:
         return HttpResponseRedirect(reverse("frontpage"))
 #             cursor.execute('SELECT * FROM category')
