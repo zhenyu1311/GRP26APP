@@ -13,7 +13,7 @@
 
 <html>
   <head>
-    <title>Your Activities</title>
+    <title>Your Rides</title>
   </head>
   <body>
     <h1>Hello {{user_fullname}}!</h1>
@@ -25,16 +25,16 @@
     <a href="/"> Back to Main Page </a>
     
     
-    <h2>Activities that you have created</h2>
+    <h2>Rides that you have created</h2>
     <table>
       <thead>
-        <th>Activity Name</th>
-        <th>Inviter</th>
+        <th>Ride Name</th>
+        <th>Driver</th>
         <th>Category</th>
         <th>Start Date Time</th>
-        <th>Venue</th>
+        <th>Destination</th>
         <th>Capacity</th>
-        <th>Participants List</th>
+        <th>Passengers List</th>
       </thead>
       {% for activity in past_inviter_list %}
       <tr>
@@ -50,7 +50,7 @@
             href="participants/{{ activity.0 }}"
             class="text-decoration-none"
           >
-            Participants List
+            Passengers List
           </a>
         </td>
       </tr>
@@ -59,19 +59,19 @@
 
     <br /><br />
 
-    <h2>Upcoming Activities that you have created</h2>
+    <h2>Upcoming Rides that you have created</h2>
     <br />
     <table border="1">
 
       <thead>
-        <th>Activity Name</th>
-        <th>Inviter</th>
+        <th>Ride Name</th>
+        <th>Driver</th>
         <th>Category</th>
         <th>Start Date Time</th>
-        <th>Venue</th>
+        <th>Destination</th>
         <th>Capacity</th>
-        <th>Edit Activity</th>
-        <th>Participants List</th>
+        <th>Edit Ride</th>
+        <th>Passengers List</th>
       </thead>
       {% for activity in inviter_list %}
       <tr>
@@ -96,7 +96,7 @@
             href="participants/{{ activity.0 }}"
             class="text-decoration-none"
           >
-            Participants List
+            Passengers List
           </a>
         </td>
       </tr>
@@ -106,17 +106,17 @@
     
 
 
-    <h2>Your Upcoming Activities</h2>
+    <h2>Your Upcoming Rides</h2>
     
     <table border="1">
 
       <thead>
-        <th>Activity Name</th>
-        <th>Inviter</th>
+        <th>Ride Name</th>
+        <th>Driver</th>
         <th>Category</th>
         <th>Start Date Time</th>
-        <th>Venue</th>
-        <th>Delete Activity</th>
+        <th>Destination</th>
+        <th>Delete Ride</th>
       </thead>
       {% for activity in upcoming_activities_list %}
       <tr>
@@ -140,15 +140,15 @@
 
     
 
-    <h2>Past Activities that you have joined</h2>
+    <h2>Past Rides</h2>
     <br />
     <table border="1">
       <thead>
-        <th>Activity Name</th>
-        <th>Inviter</th>
+        <th>Ride Name</th>
+        <th>Driver</th>
         <th>Category</th>
         <th>Start Date Time</th>
-        <th>Venue</th>
+        <th>Destination</th>
         <th>Review</th>
       </thead>
       {% for activity in joined_activities_list %}
