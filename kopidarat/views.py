@@ -12,6 +12,95 @@ import datetime
 
 # View Functions for main pages for the member's side of the website
 
+def index(request,*kwargs):
+    '''
+    Index view function responsible for the main page of the website.
+    Takes in the request and returns the rendering of the main page.
+
+    NOTE: The function for joining events is refactored out for better code clarity. 
+    Argument:
+        request: HTTP request
+    Return:
+        render function: renders the main page (path: '') 
+    '''
+    # Checking if user is logged in
+    user_email = request.session.get("email", False)
+    message=''
+    if kwargs:
+        message=''.join(kwargs)
+    if user_email is not False:
+        with connection.cursor() as cursor:
+
+
+        all_activities_sql = "SELECT a.activity_id, u.full_name as driver, a.price, a.destination, a.start_date_time, a.start_point, count_passenger.count, a.capacity FROM activity a, users u, joins j, (SELECT j1.activity_id, COUNT(j1.passenger) as count FROM activity a1, joins j1 WHERE j1.activity_id = a1.activity_id GROUP BY j1.activity_id) AS count_passenger WHERE a.driver = u.email AND j.activity_id = a.activity_id AND j.passenger = u.email AND count_passenger.activity_id = a.activity_id"
+        ordering_sql = " ORDER BY a.start_date_time ASC"
+        
+        # Get recommended activities:
+        # All upcoming activities whose categories have been joined by the user
+        recommendations_sql=" AND a.price IN (SELECT a2.price FROM joins j2, activity a2 WHERE j2.activity_id = a2.activity_id AND j2.passenger= '"+user_email+"' GROUP BY a2.price ORDER BY COUNT(*) DESC LIMIT 3)"
+        with connection.cursor() as cursor:
+            cursor.execute(all_activities_sql+recommendations_sql+ordering_sql)
+            recommended_activities = cursor.fetchall()
+        
+        #display_date_sql = " AND (a.start_date_time - NOW()) > '0 day'"
+        #recommended_categories_sql = " AND a.price IN (SELECT a1.price FROM joins j1, activity a1 WHERE j1.activity_id = a1.activity_id AND a1.driver <> j1.passenger AND j1.passenger = %s AND NOW() > a1.start_date_time AND a1.activity_id NOT IN (SELECT a2.activity_id FROM activity a2 WHERE NOW() <= a2.start_date_time ORDER BY a2.start_date_time ASC))"
+        #grouping_sql = " GROUP BY a.activity_id, u.full_name, a.price, a.destination, a.start_date_time, a.start_point, count_passenger.count, a.capacity"
+
+        
+        if request.method == "POST":
+
+
+            #filtering method for time
+            list_of_time_filters = request.POST.getlist('display_period')
+            time_filter_sql=""
+            #Check if any time filter is chosen
+            if len(list_of_time_filters)>0:
+                display_period = list_of_time_filters[0].split('_') # Need the values in HTML to be split with underscore
+                duration,unit = int(display_period[0]),display_period[1]
+
+                if unit == 'week':
+                    limit_time = (datetime.datetime.now()) + datetime.timedelta(weeks=duration)
+                elif unit == 'month':
+                    limit_time = (datetime.datetime.now()) + relativedelta(month=duration)
+                time_filter_sql = " AND a.start_date_time <"+limit_time.strftime("'%Y-%m-%d %H:%M:%S'")
+            
+            with connection.cursor() as cursor:
+                cursor.execute(all_activities_sql + category_filter_sql + time_filter_sql + ordering_sql)
+                activities = cursor.fetchall()
+     
+
+            #with connection.cursor() as cursor:
+                #cursor.execute(all_activities_sql+display_date_sql+category_filters+
+                               #grouping_sql+ordering_sql)
+                #activities = cursor.fetchall()
+
+        # Get all activities data from the database
+        #else:
+            #with connection.cursor() as cursor:
+                #cursor.execute(all_activities_sql+display_date_sql+grouping_sql+ordering_sql)
+                #activities = cursor.fetchall()
+        
+        else:
+            with connection.cursor() as cursor:
+                cursor.execute(all_activities_sql+ordering_sql)
+                activities = cursor.fetchall()
+        # Put all the records inside the dictionary context
+        #context = {
+            #'recommended_activities': recommended_activities,
+            #'records': activities,
+            #'full_name': request.session.get("full_name"),
+            #'categories': categories,
+            #'message':message
+        #}
+        context = {'recommended_activities':recommended_activities,
+        'records' : activities,
+        'full_name':request.session.get("full_name"),
+
+        'message':message}
+        return render(request, "index.html", context)
+    else:
+        return HttpResponseRedirect(reverse("frontpage"))
+    
 def become_admin(request):
     context = {}
     status = ''
@@ -30,34 +119,7 @@ def become_admin(request):
     context['message'] = status
     return render(request, "become_admin.html", context)
 
-def index(request,*kwargs):
-    '''
-    Index view function responsible for the main page of the website.
-    Takes in the request and returns the rendering of the main page.
 
-    NOTE: The function for joining events is refactored out for better code clarity. 
-    Argument:
-        request: HTTP request
-    Return:
-        render function: renders the main page (path: '') 
-    '''
-    # Checking if user is logged in
-    user_email = request.session.get("email", False)
-    message=''
-    if kwargs:
-        message=''.join(kwargs)
-    
-    if user_email is not False:
-        context = dict()
-         with connection.cursor() as cursor:
-                cursor.execute(
-                'SELECT * FROM activity')
-                activities = cursor.fetchall()
-        context = {
-            'activites': activites,
-        return render(request, "index.html", context)
-    else:
-        return HttpResponseRedirect(reverse("frontpage"))
 
 
 def create_activity(request):
