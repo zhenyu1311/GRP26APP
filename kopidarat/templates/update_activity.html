@@ -60,13 +60,13 @@
 {% load static %}
 <html>
   <head>
-    <title>Update Activity</title>
+    <title>Update Ride</title>
   </head>
   <body>
     <div class="container">
     <div class="form-wrap">
-    <h2>Update Activity</h2>
-    <a href="/user_activity">Back to your activities</a>
+    <h2>Update Ride</h2>
+    <a href="/user_activity">Back to your rides</a>
 
     <form method="POST">
       {% csrf_token %}
@@ -76,7 +76,7 @@
           autofocus
           type="text"
           name="activity_name"
-          placeholder="Activity Name"
+          placeholder="Ride Name"
         />
       </div>
       <div class="form-group">
@@ -100,13 +100,13 @@
           class="form-control"
           type="text"
           name="venue"
-          placeholder="Venue"
+          placeholder="Destination"
         />
       </div>
       <div class="form-group">
         <input class="form-control" type="number" name="capacity" />
       </div>
-      <input class="btn btn-primary" type="submit" value="Update Activity" />
+      <input class="btn btn-primary" type="submit" value="Update Ride" />
     </form>
   </div>
   </div>
