@@ -48,7 +48,7 @@ def index(request,*kwargs):
         message=''.join(kwargs)
     
     if user_email is not False:
-#         with connection.cursor() as cursor:
+         with connection.cursor() as cursor:
 #             cursor.execute('SELECT * FROM category')
 #             categories = cursor.fetchall()
 
@@ -102,10 +102,10 @@ def index(request,*kwargs):
 #                 #activities = cursor.fetchall()
 
 #         # Get all activities data from the database
-#         #else:
-#             #with connection.cursor() as cursor:
-#                 #cursor.execute(all_activities_sql+display_date_sql+grouping_sql+ordering_sql)
-#                 #activities = cursor.fetchall()
+         #else:
+             #with connection.cursor() as cursor:
+                 cursor.execute(all_activities_sql+display_date_sql+grouping_sql+ordering_sql)
+                 activities = cursor.fetchall()
         
 #         else:
 #             with connection.cursor() as cursor:
@@ -120,7 +120,7 @@ def index(request,*kwargs):
             #'message':message
         #}
         context = {
-        #'records' : activities,
+        'records' : activities,
         'full_name':request.session.get("full_name"),
 #         'categories':categories,
         'message':message}
