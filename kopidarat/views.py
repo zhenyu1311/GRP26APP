@@ -85,8 +85,8 @@ def index(request,*kwargs):
 #         # Get all activities data from the database
          #else:
              #with connection.cursor() as cursor:
-                 cursor.execute(all_activities_sql+display_date_sql+grouping_sql+ordering_sql)
-                 activities = cursor.fetchall()
+#                 cursor.execute(all_activities_sql+display_date_sql+grouping_sql+ordering_sql)
+#                 activities = cursor.fetchall()
         
 #         else:
 #             with connection.cursor() as cursor:
@@ -100,11 +100,11 @@ def index(request,*kwargs):
             #'categories': categories,
             #'message':message
         #}
-        context = {}
+#        context = {}
         'records' : activities,
         'full_name':request.session.get("full_name"),
 #         'categories':categories,
-        'message':message}
+ #       'message':message}
         return render(request, "index.html", context)
     else:
         return HttpResponseRedirect(reverse("frontpage"))
