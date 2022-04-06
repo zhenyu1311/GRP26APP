@@ -1,15 +1,15 @@
 
 <div class="container">
-<h1>Welcome to KopiDarat!</h1>
-<h2>Wanna play golf but cannot find friends to play with you? Wanna try out traditional Japanese tea ceremony but cannot find anyone else who seems interested?
+<h1>Welcome to [AppName]</h1>
+<h2>Your journey one click away.
 </h2>
 {% load static %}
 <style> 
     @import url('https://fonts.googleapis.com/css2?family=Sora:wght@800&display=swap');
     body {
         color: black;
-        text-align: center;
-        background-color: #FF8415;
+        text-align: left;
+        background-color: #86FBED;
     }
     h1 {
         font-family: 'Sora';
@@ -26,7 +26,7 @@
         margin: 30px auto;
     }
     a:hover {
-        color: #17706c;
+        color: #068779;
         text-decoration: underline;
     }
     .dark {
@@ -36,17 +36,17 @@
 <br></br>
     <h2>
     <div id="box-1" class="box">
-        It's time you join (or organise!) a kopi darat -- a casual meetup among random people interested in taking part in the same activities as you.
+        Start your carsharing session, or join one a kopi darat now!
     </div>
     <div class="curve"> </div>
     <div class="dark"> </div>
     </h2>
     <br></br>
     <h2>
-    With <strong>{{activity_count}}</strong> activities and <strong>{{user_count}}</strong> users, we are excited to connect you with exciting new possibilities!
+    With <strong>{{activity_count}}</strong> activities and <strong>{{user_count}}</strong> users, you can easily connect with riders/drivers of the same destination!
     </h2>
     <br></br>
-    <h2>
+    /*<h2>
     Check out the types of activities we host below!
     </h2>
         <br/><br/>
@@ -61,7 +61,7 @@
             <td> {{ category.1 }}</td>
         </tr>
         {%endfor%}
-        </table>
+        </table> */
     <br></br>
     <h3>
     Interested? <a href='register'> Sign up now. </a> 
