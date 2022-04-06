@@ -36,25 +36,25 @@ h2 {
 </style>
 <html>
   <body>
-    <h2>List of activities</h2>
+    <h2>List of rides</h2>
     <br />
-    <a href="/admin_activity_create"> Create new activity </a>
+    <a href="/admin_activity_create"> Create new ride </a>
     <br />
     <a href="/admin_index"> Back to Main Page </a>
 
   <div class="content-table">
     <table border="1">
       <thead>
-        <th>Activity ID</th>
-        <th>Activity Name</th>
-        <th>Inviter</th>
+        <th>Ride ID</th>
+        <th>Ride Name</th>
+        <th>Driver</th>
         <th>Category</th>
         <th>Start Date Time</th>
-        <th>Venue</th>
+        <th>Destination</th>
         <th>Joined</th>
         <th>Capacity</th>
-        <th>Edit Activity</th>
-        <th>Delete Activity</th>
+        <th>Edit Ride</th>
+        <th>Delete Ride</th>
       </thead>
       {% for activity in list_of_activities %}
       <tr>
