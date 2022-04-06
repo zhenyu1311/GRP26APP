@@ -73,17 +73,17 @@ table,tr,td {
       {% endfor %}
     </table>
   </br>
-  <h3> Activities Created by Admin </h3>
+  <h3> Rides Created by Admin </h3>
     <table border="1">
       <thead>
-        <th>Activity Name</th>
-        <th>Inviter</th>
+        <th>Ride Name</th>
+        <th>Driver</th>
         <th>Category</th>
         <th>Start Date Time</th>
-        <th>Venue</th>
+        <th>Destination</th>
         <th>Capacity</th>
         <th>Edit Activity</th>
-        <th>Participants List</th>
+        <th>Passengers List</th>
       </thead>
       {% for activity in list_of_activities_by_admin %}
       <tr>
@@ -105,10 +105,9 @@ table,tr,td {
         <td>
           <a
             class="button"
-            href="participants/{{ activity.0 }}"
+            href="passengers/{{ activity.0 }}"
             class="text-decoration-none"
           >
-            passengers
           </a>
         </td>
       </tr>
@@ -119,7 +118,7 @@ table,tr,td {
     <a href="/admin_user"> List of users </a>
     <br /><br />
     <h4>Journey list, click below</h4>
-    <a href="/admin_activity"> List of activities </a>
+    <a href="/admin_activity"> List of rides </a>
     <br /><br />
     <h4>To see the list of reviews, click below</h4>
     <a href="/admin_review"> List of reviews </a>
