@@ -228,7 +228,7 @@ def user_activity(request):
             upcoming_activities_list = cursor.fetchall()
 
             # Get the table of past activities created by other user where the user has joined
-            cursor.execute('SELECT a.activity_id, u.full_name, a.category, a.activity_name, a.start_date_time, a.venue FROM joins j, activity a, users u WHERE j.activity_id = a.activity_id AND a.inviter = u.email AND a.inviter <> j.participant AND j.participant = %s AND NOW() > a.start_date_time ORDER BY a.start_date_time ASC', [
+            cursor.execute('SELECT a.activity_id, u.full_name, a.category, a.activity_name, a.start_date_time, a.venue FROM joins j, activity a, users u WHERE j.activity_id = a.activity_id AND a.driver = u.email AND a.driver <> j.participant AND j.participant = %s AND NOW() > a.start_date_time ORDER BY a.start_date_time ASC', [
                 user_email
             ])
             joined_activities_list = cursor.fetchall()
@@ -251,12 +251,12 @@ def user_activity(request):
 
             # Select activities created by administrators
             #kenapa harus ada events yg admin buat ya?
-            cursor.execute("SELECT * FROM activity a, users u WHERE a.inviter = u.email AND u.type = 'administrator' ORDER BY a.start_date_time ASC")
+            cursor.execute("SELECT * FROM activity a, users u WHERE a.driver = u.email AND u.type = 'administrator' ORDER BY a.start_date_time ASC")
             list_of_activities_by_admin = cursor.fetchall()
 
         context['user_fullname'] = request.session.get('full_name')
-        context['past_inviter_list'] = past_inviter_list
-        context['inviter_list'] = inviter_list
+        context['past_driver_list'] = past_driver_list
+        context['driver_list'] = driver_list
         context['upcoming_activities_list'] = upcoming_activities_list
         context['joined_activities_list'] = joined_activities_list
         context['reviews_list'] = reviews_list
