@@ -941,7 +941,7 @@ def frontpage(request):
 
         context["activity_count"] = activity_count
         context["user_count"] = user_count
-        context["categories"] = categories
+#         context["categories"] = categories
         return render(request, 'frontpage.html', context)
 
 
