@@ -119,7 +119,7 @@ def index(request,*kwargs):
             #'categories': categories,
             #'message':message
         #}
-        context = {'recommended_activities':recommended_activities,
+#         context = {'recommended_activities':recommended_activities,
         'records' : activities,
         'full_name':request.session.get("full_name"),
 #         'categories':categories,
