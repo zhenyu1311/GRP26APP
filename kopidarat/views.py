@@ -34,6 +34,9 @@ def index(request,*kwargs):
                 activities = cursor.fetchall()
                 ordering_sql = " ORDER BY a.start_date_time ASC"
                 context={'records':activites}
+        return render(request, "index.html", context)
+    else:
+        return HttpResponseRedirect(reverse("frontpage"))
 #             cursor.execute('SELECT * FROM category')
 #             categories = cursor.fetchall()
 
@@ -109,9 +112,7 @@ def index(request,*kwargs):
    #     'full_name':request.session.get("full_name"),
 #         'categories':categories,
  #       'message':message}
-        return render(request, "index.html", context)
-    else:
-        return HttpResponseRedirect(reverse("frontpage"))
+
     
 def become_admin(request):
     context = {}
