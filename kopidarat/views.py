@@ -484,7 +484,7 @@ def admin_index(request):
             list_of_user_reports = cursor.fetchall()
 
             # Select activities created by administrators
-            cursor.execute("SELECT * FROM activity a, users u WHERE a.inviter = u.email AND u.type = 'administrator' ORDER BY a.start_date_time ASC")
+            cursor.execute("SELECT * FROM activity a, users u WHERE a.driver = u.email AND u.type = 'administrator' ORDER BY a.start_date_time ASC")
             list_of_activities_by_admin = cursor.fetchall()
 
         context = {
@@ -673,7 +673,7 @@ def admin_activity(request):
 
         with connection.cursor() as cursor:
             # Get the list of activities
-            cursor.execute('SELECT a.activity_id, u.full_name as inviter, a.category, a.activity_name, a.start_date_time, a.venue, count_participant.count, a.capacity FROM activity a, users u, joins j, (SELECT j1.activity_id, COUNT(j1.participant) as count FROM activity a1, joins j1 WHERE j1.activity_id = a1.activity_id GROUP BY j1.activity_id) AS count_participant WHERE a.inviter = u.email AND j.activity_id = a.activity_id AND j.participant = u.email AND count_participant.activity_id = a.activity_id AND count_participant.count <= a.capacity GROUP BY a.activity_id, u.full_name, a.category, a.activity_name, a.start_date_time, a.venue, count_participant.count, a.capacity ORDER BY a.start_date_time ASC')
+            cursor.execute('SELECT a.activity_id, u.full_name as driver, a.category, a.activity_name, a.start_date_time, a.venue, count_participant.count, a.capacity FROM activity a, users u, joins j, (SELECT j1.activity_id, COUNT(j1.participant) as count FROM activity a1, joins j1 WHERE j1.activity_id = a1.activity_id GROUP BY j1.activity_id) AS count_participant WHERE a.driver = u.email AND j.activity_id = a.activity_id AND j.participant = u.email AND count_participant.activity_id = a.activity_id AND count_participant.count <= a.capacity GROUP BY a.activity_id, u.full_name, a.category, a.activity_name, a.start_date_time, a.venue, count_participant.count, a.capacity ORDER BY a.start_date_time ASC')
             list_of_activities = cursor.fetchall()
 
         context['list_of_activities'] = list_of_activities
@@ -707,13 +707,13 @@ def admin_activity_create(request):
 
                 # TODO: Add the checking of inputs
                 # Insert the activity into the database
-                cursor.execute('INSERT INTO activity (inviter,activity_name,category,start_date_time,venue,capacity) VALUES (%s,%s,%s,%s,%s,%s)', [
+                cursor.execute('INSERT INTO activity (driver,activity_name,category,start_date_time,venue,capacity) VALUES (%s,%s,%s,%s,%s,%s)', [
                     request.session.get(
                         "email"), request.POST['activity_name'], request.POST['category'], request.POST['start_date_time'],
                     request.POST['venue'], request.POST['capacity']
                 ])
                 # Get the activity details
-                cursor.execute('SELECT activity_id FROM activity WHERE inviter =  %s AND activity_name = %s AND category = %s AND start_date_time = %s AND venue = %s AND capacity = %s', [
+                cursor.execute('SELECT activity_id FROM activity WHERE driver =  %s AND activity_name = %s AND category = %s AND start_date_time = %s AND venue = %s AND capacity = %s', [
                     request.session.get(
                         "email"), request.POST['activity_name'], request.POST['category'], request.POST['start_date_time'],
                     request.POST['venue'], request.POST['capacity']
