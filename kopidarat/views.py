@@ -100,7 +100,7 @@ def index(request,*kwargs):
             #'categories': categories,
             #'message':message
         #}
-        context = {
+        context = {}
         'records' : activities,
         'full_name':request.session.get("full_name"),
 #         'categories':categories,
