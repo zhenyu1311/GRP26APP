@@ -365,12 +365,12 @@ def participants(request, activity_id):
             participants = cursor.fetchall()
 
             cursor.execute(
-                'SELECT a.activity_name,a.inviter FROM activity a WHERE a.activity_id=%s', [activity_id])
-            activity_name, inviter = cursor.fetchone()
+                'SELECT a.activity_name,a.driver FROM activity a WHERE a.activity_id=%s', [activity_id])
+            activity_name, driver = cursor.fetchone()
 
             context["participants"] = participants
             context["activity_name"] = activity_name
-            context["inviter"] = inviter
+            context["driver"] = driver
             return render(request, 'participants.html', context)
         else:
             message="You are not registered for this activity, hence you are not authorised to view this page."
@@ -394,7 +394,7 @@ def create_review(request,activity_id):
     context={}
     if user_email is not False:
         with connection.cursor() as cursor:
-            cursor.execute('SELECT u.full_name AS name, a.activity_name AS activity FROM activity a, users u WHERE a.activity_id=%s AND u.email=a.inviter',[activity_id])
+            cursor.execute('SELECT u.full_name AS name, a.activity_name AS activity FROM activity a, users u WHERE a.activity_id=%s AND u.email=a.driver',[activity_id])
             activity_details = cursor.fetchone()
             context["activity_details"]=activity_details
             if request.method == 'POST':
