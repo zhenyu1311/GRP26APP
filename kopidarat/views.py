@@ -107,10 +107,10 @@ def index(request,*kwargs):
                  cursor.execute(all_activities_sql+display_date_sql+grouping_sql+ordering_sql)
                  activities = cursor.fetchall()
         
-#         else:
-#             with connection.cursor() as cursor:
-#                 cursor.execute(all_activities_sql+ordering_sql)
-#                 activities = cursor.fetchall()
+         else:
+             with connection.cursor() as cursor:
+                 cursor.execute(all_activities_sql+ordering_sql)
+                 activities = cursor.fetchall()
         # Put all the records inside the dictionary context
         #context = {
             #'recommended_activities': recommended_activities,
