@@ -67,24 +67,24 @@
     <br/>
     <table border=1>
       <thead>
-          <th> Activity Name </th>
-          <th> Inviter </th>
-          <th> Category </th>
+          <th> Ride id </th>
           <th> Start Date Time </th>
-          <th> Venue </th>
+          <th> Driver </th>
+          <th> Start Point </th>
+          <th> Price </th>
           <th> Joined </th>
           <th> Capacity </th>
           <th> Join </th>
       </thead>
       {% for activity in recommended_activities %}
       <tr>
+        <td> {{ activity.0 }}</td>
         <td> {{ activity.3 }}</td>
         <td> {{ activity.1 }}</td>
-        <td> {{ activity.2 }}</td>
         <td> {{ activity.4 }}</td>
         <td> {{ activity.5 }}</td>
         <td> {{ activity.6 }}</td>
-        <td> {{ activity.7 }}</td>
+        <td> {{ activity.6 }}</td>
         <td> <a class='button' href="{% url 'join' activity.0 %}" class="text-decoration-none">Join</a> </td>
       </tr>
       {% endfor %}
@@ -113,24 +113,24 @@
     
     <table border=1>
       <thead>
-          <th> Activity Name </th>
-          <th> Inviter </th>
-          <th> Category </th>
+          <th> Ride id </th>
           <th> Start Date Time </th>
-          <th> Venue </th>
+          <th> Driver </th>
+          <th> Start Point </th>
+          <th> Price </th>
           <th> Joined </th>
           <th> Capacity </th>
           <th> Join </th>
       </thead>
       {% for activity in records %}
       <tr>
+        <td> {{ activity.0 }}</td>
         <td> {{ activity.3 }}</td>
         <td> {{ activity.1 }}</td>
-        <td> {{ activity.2 }}</td>
         <td> {{ activity.4 }}</td>
         <td> {{ activity.5 }}</td>
         <td> {{ activity.6 }}</td>
-        <td> {{ activity.7 }}</td>
+        <td> {{ activity.6 }}</td>
         <td> <a class='button' href="{% url 'join' activity.0 %}" class="text-decoration-none">Join</a> </td>
       </tr>
       {% endfor %}
