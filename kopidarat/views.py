@@ -30,6 +30,10 @@ def index(request,*kwargs):
     
     if user_email is not False:
          with connection.cursor() as cursor:
+                cursor.execute('SELECT * FROM activity')
+                activities = cursor.fetchall()
+                ordering_sql = " ORDER BY a.start_date_time ASC"
+                context={'records':activites}
 #             cursor.execute('SELECT * FROM category')
 #             categories = cursor.fetchall()
 
