@@ -935,9 +935,9 @@ def frontpage(request):
         activity_count = cursor.fetchone()[0]
         cursor.execute('SELECT COUNT(*) FROM users')
         user_count = cursor.fetchone()[0]
-        cursor.execute(
-            'SELECT category, COUNT(*) FROM activity GROUP BY category ORDER BY COUNT(*) DESC')
-        categories = cursor.fetchall()
+#         cursor.execute(
+#             'SELECT category, COUNT(*) FROM activity GROUP BY category ORDER BY COUNT(*) DESC')
+#         categories = cursor.fetchall()
 
         context["activity_count"] = activity_count
         context["user_count"] = user_count
