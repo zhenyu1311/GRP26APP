@@ -44,7 +44,7 @@ def index(request,*kwargs):
 #             recommended_activities = cursor.fetchall()
         
         #display_date_sql = " AND (a.start_date_time - NOW()) > '0 day'"
-        #recommended_categories_sql = " AND a.category IN (SELECT a1.category FROM joins j1, activity a1 WHERE j1.activity_id = a1.activity_id AND a1.inviter <> j1.participant AND j1.participant = %s AND NOW() > a1.start_date_time AND a1.activity_id NOT IN (SELECT a2.activity_id FROM activity a2 WHERE NOW() <= a2.start_date_time ORDER BY a2.start_date_time ASC))"
+        #recommended_categories_sql = " AND a.category IN (SELECT a1.category FROM joins j1, activity a1 WHERE j1.activity_id = a1.activity_id AND a1.driver <> j1.participant AND j1.participant = %s AND NOW() > a1.start_date_time AND a1.activity_id NOT IN (SELECT a2.activity_id FROM activity a2 WHERE NOW() <= a2.start_date_time ORDER BY a2.start_date_time ASC))"
         #grouping_sql = " GROUP BY a.activity_id, u.full_name, a.category, a.activity_name, a.start_date_time, a.venue, count_participant.count, a.capacity"
 
 #         if request.method == "POST":
@@ -209,20 +209,20 @@ def user_activity(request):
 
         with connection.cursor() as cursor:
 
-            # Get the table of past activities where the current user is the inviter
-            cursor.execute('SELECT * FROM activity a, users u WHERE a.inviter = u.email AND a.inviter = %s AND a.start_date_time < NOW() ORDER BY a.start_date_time ASC', [
+            # Get the table of past activities where the current user is the driver
+            cursor.execute('SELECT * FROM activity a, users u WHERE a.driver = u.email AND a.driver = %s AND a.start_date_time < NOW() ORDER BY a.start_date_time ASC', [
                 user_email
             ])
-            past_inviter_list = cursor.fetchall()
+            past_driver_list = cursor.fetchall()
 
-            # Get the table of upcoming activities where the current user is the inviter
-            cursor.execute('SELECT * FROM activity a, users u WHERE a.inviter = u.email AND a.inviter = %s AND a.start_date_time > NOW() ORDER BY a.start_date_time ASC', [
+            # Get the table of upcoming activities where the current user is the driver
+            cursor.execute('SELECT * FROM activity a, users u WHERE a.driver = u.email AND a.driver = %s AND a.start_date_time > NOW() ORDER BY a.start_date_time ASC', [
                 user_email
             ])
-            inviter_list = cursor.fetchall()
+            driver_list = cursor.fetchall()
 
             # Get the table of upcoming activities created by other user where the user has signed up for
-            cursor.execute('SELECT a.activity_id, u.full_name, a.category, a.activity_name, a.start_date_time, a.venue FROM joins j, activity a, users u WHERE j.activity_id = a.activity_id AND a.inviter = u.email AND a.inviter <> j.participant AND j.participant = %s AND NOW() <= a.start_date_time ORDER BY a.start_date_time ASC', [
+            cursor.execute('SELECT a.activity_id, u.full_name, a.category, a.activity_name, a.start_date_time, a.venue FROM joins j, activity a, users u WHERE j.activity_id = a.activity_id AND a.driver = u.email AND a.driver <> j.participant AND j.participant = %s AND NOW() <= a.start_date_time ORDER BY a.start_date_time ASC', [
                 user_email
             ])
             upcoming_activities_list = cursor.fetchall()
