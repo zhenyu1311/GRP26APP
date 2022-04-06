@@ -51,19 +51,19 @@ def index(request,*kwargs):
             cursor.execute('SELECT * FROM category')
             categories = cursor.fetchall()
 
-        all_activities_sql = "SELECT a.activity_id, u.full_name as driver, a.start_point, a.start_date_time, a.destination, count_participant.count, a.capacity FROM activity a, users u, joins j, (SELECT j1.activity_id, COUNT(j1.passenger) as count FROM activity a1, joins j1 WHERE j1.activity_id = a1.activity_id GROUP BY j1.activity_id) AS count_participant WHERE a.driver = u.email AND j.activity_id = a.activity_id AND j.passenger = u.email AND count_participant.activity_id = a.activity_id"
+        all_activities_sql = "SELECT a.activity_id, u.full_name as driver, a.start_point, a.start_date_time, a.destination, count_passenger.count, a.capacity FROM activity a, users u, joins j, (SELECT j1.activity_id, COUNT(j1.passenger) as count FROM activity a1, joins j1 WHERE j1.activity_id = a1.activity_id GROUP BY j1.activity_id) AS count_passenger WHERE a.driver = u.email AND j.activity_id = a.activity_id AND j.passenger = u.email AND count_passenger.activity_id = a.activity_id"
         ordering_sql = " ORDER BY a.start_date_time ASC"
         
         # Get recommended activities:
         # All upcoming activities whose categories have been joined by the user
-        recommendations_sql=" AND a.category IN (SELECT a2.category FROM joins j2, activity a2 WHERE j2.activity_id = a2.activity_id AND j2.participant= '"+user_email+"' GROUP BY a2.category ORDER BY COUNT(*) DESC LIMIT 3)"
+        recommendations_sql=" AND a.category IN (SELECT a2.category FROM joins j2, activity a2 WHERE j2.activity_id = a2.activity_id AND j2.passenger= '"+user_email+"' GROUP BY a2.category ORDER BY COUNT(*) DESC LIMIT 3)"
         with connection.cursor() as cursor:
             cursor.execute(all_activities_sql+recommendations_sql+ordering_sql)
             recommended_activities = cursor.fetchall()
         
         #display_date_sql = " AND (a.start_date_time - NOW()) > '0 day'"
-        #recommended_categories_sql = " AND a.category IN (SELECT a1.category FROM joins j1, activity a1 WHERE j1.activity_id = a1.activity_id AND a1.inviter <> j1.participant AND j1.participant = %s AND NOW() > a1.start_date_time AND a1.activity_id NOT IN (SELECT a2.activity_id FROM activity a2 WHERE NOW() <= a2.start_date_time ORDER BY a2.start_date_time ASC))"
-        #grouping_sql = " GROUP BY a.activity_id, u.full_name, a.category, a.activity_name, a.start_date_time, a.venue, count_participant.count, a.capacity"
+        #recommended_categories_sql = " AND a.category IN (SELECT a1.category FROM joins j1, activity a1 WHERE j1.activity_id = a1.activity_id AND a1.driver <> j1.passenger AND j1.passenger = %s AND NOW() > a1.start_date_time AND a1.activity_id NOT IN (SELECT a2.activity_id FROM activity a2 WHERE NOW() <= a2.start_date_time ORDER BY a2.start_date_time ASC))"
+        #grouping_sql = " GROUP BY a.activity_id, u.full_name, a.category, a.start_point, a.start_date_time, a.venue, count_passenger.count, a.capacity"
 
         
         if request.method == "POST":
@@ -152,7 +152,7 @@ def create_activity(request):
 
             with connection.cursor() as cursor:
                 cursor.execute('CALL create_new_activity(%s,%s,%s,%s,%s,%s)',[
-                    user_email,request.POST['category'],request.POST['activity_name'],request.POST['start_date_time'],request.POST['venue'], request.POST['capacity']])
+                    user_email,request.POST['category'],request.POST['start_point'],request.POST['start_date_time'],request.POST['destination'], request.POST['capacity']])
                 return HttpResponseRedirect(reverse("user_activity"))
         else:
             return render(request, 'create_activity.html', context)
@@ -208,32 +208,32 @@ def user_activity(request):
 
         with connection.cursor() as cursor:
 
-            # Get the table of past activities where the current user is the inviter
-            cursor.execute('SELECT * FROM activity a, users u WHERE a.inviter = u.email AND a.inviter = %s AND a.start_date_time < NOW() ORDER BY a.start_date_time ASC', [
+            # Get the table of past activities where the current user is the driver
+            cursor.execute('SELECT * FROM activity a, users u WHERE a.driver = u.email AND a.driver = %s AND a.start_date_time < NOW() ORDER BY a.start_date_time ASC', [
                 user_email
             ])
-            past_inviter_list = cursor.fetchall()
+            past_driver_list = cursor.fetchall()
 
-            # Get the table of upcoming activities where the current user is the inviter
-            cursor.execute('SELECT * FROM activity a, users u WHERE a.inviter = u.email AND a.inviter = %s AND a.start_date_time > NOW() ORDER BY a.start_date_time ASC', [
+            # Get the table of upcoming activities where the current user is the driver
+            cursor.execute('SELECT * FROM activity a, users u WHERE a.driver = u.email AND a.driver = %s AND a.start_date_time > NOW() ORDER BY a.start_date_time ASC', [
                 user_email
             ])
-            inviter_list = cursor.fetchall()
+            driver_list = cursor.fetchall()
 
             # Get the table of upcoming activities created by other user where the user has signed up for
-            cursor.execute('SELECT a.activity_id, u.full_name, a.category, a.activity_name, a.start_date_time, a.venue FROM joins j, activity a, users u WHERE j.activity_id = a.activity_id AND a.inviter = u.email AND a.inviter <> j.participant AND j.participant = %s AND NOW() <= a.start_date_time ORDER BY a.start_date_time ASC', [
+            cursor.execute('SELECT a.activity_id, u.full_name, a.category, a.start_point, a.start_date_time, a.destination FROM joins j, activity a, users u WHERE j.activity_id = a.activity_id AND a.driver = u.email AND a.driver <> j.passenger AND j.passenger = %s AND NOW() <= a.start_date_time ORDER BY a.start_date_time ASC', [
                 user_email
             ])
             upcoming_activities_list = cursor.fetchall()
 
             # Get the table of past activities created by other user where the user has joined
-            cursor.execute('SELECT a.activity_id, u.full_name, a.category, a.activity_name, a.start_date_time, a.venue FROM joins j, activity a, users u WHERE j.activity_id = a.activity_id AND a.inviter = u.email AND a.inviter <> j.participant AND j.participant = %s AND NOW() > a.start_date_time ORDER BY a.start_date_time ASC', [
+            cursor.execute('SELECT a.activity_id, u.full_name, a.category, a.start_point, a.start_date_time, a.destination FROM joins j, activity a, users u WHERE j.activity_id = a.activity_id AND a.driver = u.email AND a.driver <> j.passenger AND j.passenger = %s AND NOW() > a.start_date_time ORDER BY a.start_date_time ASC', [
                 user_email
             ])
             joined_activities_list = cursor.fetchall()
 
             # Get table of reviews that user has created
-            cursor.execute('SELECT a.activity_id, r.timestamp, r.comment FROM review r, activity a, users u WHERE r.activity_id = a.activity_id AND r.participant = u.email AND r.participant = %s ORDER BY a.start_date_time ASC', [
+            cursor.execute('SELECT a.activity_id, r.timestamp, r.comment FROM review r, activity a, users u WHERE r.activity_id = a.activity_id AND r.passenger = u.email AND r.passenger = %s ORDER BY a.start_date_time ASC', [
                 user_email
             ])
             reviews_list = cursor.fetchall()
@@ -245,17 +245,17 @@ def user_activity(request):
             reports_list = cursor.fetchall()
 
             # Select the top 5 activities with the highest average rating
-            cursor.execute('SELECT a.activity_id,a.activity_name, AVG(r.rating)::NUMERIC(10,2) AS rating FROM activity a, review r WHERE a.activity_id = r.activity_id GROUP BY a.activity_id, a.activity_name ORDER BY rating DESC, a.activity_id ASC LIMIT 5')
+            cursor.execute('SELECT a.activity_id,a.start_point, AVG(r.rating)::NUMERIC(10,2) AS rating FROM activity a, review r WHERE a.activity_id = r.activity_id GROUP BY a.activity_id, a.start_point ORDER BY rating DESC, a.activity_id ASC LIMIT 5')
             list_of_rated_activities = cursor.fetchall()
 
             # Select activities created by administrators
             #kenapa harus ada events yg admin buat ya?
-            cursor.execute("SELECT * FROM activity a, users u WHERE a.inviter = u.email AND u.type = 'administrator' ORDER BY a.start_date_time ASC")
+            cursor.execute("SELECT * FROM activity a, users u WHERE a.driver = u.email AND u.type = 'administrator' ORDER BY a.start_date_time ASC")
             list_of_activities_by_admin = cursor.fetchall()
 
         context['user_fullname'] = request.session.get('full_name')
-        context['past_inviter_list'] = past_inviter_list
-        context['inviter_list'] = inviter_list
+        context['past_driver_list'] = past_driver_list
+        context['driver_list'] = driver_list
         context['upcoming_activities_list'] = upcoming_activities_list
         context['joined_activities_list'] = joined_activities_list
         context['reviews_list'] = reviews_list
@@ -295,9 +295,9 @@ def update_activity(request, activity_id):
             with connection.cursor() as cursor:
 
                 # Execute SQL query to update the values for the particular instance
-                cursor.execute('UPDATE activity SET activity_name = %s, category = %s, start_date_time = %s, venue = %s, capacity = %s WHERE activity_id = %s', [
-                    request.POST['activity_name'], request.POST['category'], request.POST[
-                        'start_date_time'], request.POST['venue'], request.POST['capacity'], activity_id
+                cursor.execute('UPDATE activity SET start_point = %s, category = %s, start_date_time = %s, destination = %s, capacity = %s WHERE activity_id = %s', [
+                    request.POST['start_point'], request.POST['category'], request.POST[
+                        'start_date_time'], request.POST['destination'], request.POST['capacity'], activity_id
                 ])
                 cursor.execute('SELECT * FROM activity WHERE activity_id=%s', [activity_id])
                 this_activity = cursor.fetchone()
@@ -326,7 +326,7 @@ def delete_activity(request, activity_id):
         with connection.cursor() as cursor:
 
             # Execute SQL query to delete the user from joining the activity
-            cursor.execute('DELETE FROM joins WHERE activity_id = %s AND participant = %s', [
+            cursor.execute('DELETE FROM joins WHERE activity_id = %s AND passenger = %s', [
                 activity_id, request.session.get('email')
             ])
         return HttpResponseRedirect(reverse("user_activity"))
@@ -334,7 +334,7 @@ def delete_activity(request, activity_id):
         return HttpResponseRedirect(reverse("index"))
 
 
-def participants(request, activity_id):
+def passengers(request, activity_id):
     """ 
     View function that enables people who have signed up in the activity to view everyone else who signed up.
     Takes in the request and activity_id of the event and returns a render function that renders the 
@@ -353,23 +353,23 @@ def participants(request, activity_id):
 
         with connection.cursor() as cursor:
             # Execute SQL query to check if user is registered under this activity
-            cursor.execute('SELECT * FROM joins WHERE activity_id=%s AND participant=%s', [
+            cursor.execute('SELECT * FROM joins WHERE activity_id=%s AND passenger=%s', [
                 activity_id, user_email
             ])
             user = cursor.fetchone()
 
         if user is not None:
-            cursor.execute('SELECT u.full_name, u.email, u.phone_number FROM users u, joins j WHERE j.activity_id=%s AND u.email=j.participant AND u.email<>%s',
+            cursor.execute('SELECT u.full_name, u.email, u.phone_number FROM users u, joins j WHERE j.activity_id=%s AND u.email=j.passenger AND u.email<>%s',
                            [int(activity_id), user_email])
-            participants = cursor.fetchall()
+            passengers = cursor.fetchall()
 
             cursor.execute(
-                'SELECT a.activity_name,a.inviter FROM activity a WHERE a.activity_id=%s', [activity_id])
-            activity_name, inviter = cursor.fetchone()
+                'SELECT a.start_point,a.driver FROM activity a WHERE a.activity_id=%s', [activity_id])
+            start_point, driver = cursor.fetchone()
 
-            context["participants"] = participants
-            context["activity_name"] = activity_name
-            context["inviter"] = inviter
+            context["passengers"] = passengers
+            context["start_point"] = start_point
+            context["driver"] = driver
             return render(request, 'participants.html', context)
         else:
             message="You are not registered for this activity, hence you are not authorised to view this page."
@@ -393,7 +393,7 @@ def create_review(request,activity_id):
     context={}
     if user_email is not False:
         with connection.cursor() as cursor:
-            cursor.execute('SELECT u.full_name AS name, a.activity_name AS activity FROM activity a, users u WHERE a.activity_id=%s AND u.email=a.inviter',[activity_id])
+            cursor.execute('SELECT u.full_name AS name, a.start_point AS activity FROM activity a, users u WHERE a.activity_id=%s AND u.email=a.driver',[activity_id])
             activity_details = cursor.fetchone()
             context["activity_details"]=activity_details
             if request.method == 'POST':
@@ -466,16 +466,16 @@ def admin_index(request):
 
             # Select the top 5 most active users (identified by usernames) based on the number of activities joined
             cursor.execute(
-                'SELECT u.username, COUNT(j.participant) AS total_join FROM users u, joins j WHERE u.email = j.participant GROUP BY u.username ORDER BY total_join DESC ,u.username ASC LIMIT 5')
+                'SELECT u.username, COUNT(j.passenger) AS total_join FROM users u, joins j WHERE u.email = j.passenger GROUP BY u.username ORDER BY total_join DESC ,u.username ASC LIMIT 5')
             list_of_active_users = cursor.fetchall()
 
             # Select the top 5 most inactive users (identified by usernames) based on the number of activities joined
             cursor.execute(
-                'SELECT u.username, COUNT(j.participant) AS total_join FROM users u, joins j WHERE u.email = j.participant GROUP BY u.username ORDER BY total_join ASC ,u.username ASC LIMIT 5')
+                'SELECT u.username, COUNT(j.passenger) AS total_join FROM users u, joins j WHERE u.email = j.passenger GROUP BY u.username ORDER BY total_join ASC ,u.username ASC LIMIT 5')
             list_of_inactive_users = cursor.fetchall()
 
             # Select the top 5 activities with the most reviews, by counting the number of reviews
-            cursor.execute('SELECT a.activity_id,a.activity_name, COUNT(r.comment) AS total_reviews FROM activity a, review r WHERE a.activity_id = r.activity_id GROUP BY a.activity_id, a.activity_name ORDER BY total_reviews DESC, a.activity_id ASC LIMIT 5')
+            cursor.execute('SELECT a.activity_id,a.start_point, COUNT(r.comment) AS total_reviews FROM activity a, review r WHERE a.activity_id = r.activity_id GROUP BY a.activity_id, a.start_point ORDER BY total_reviews DESC, a.activity_id ASC LIMIT 5')
             list_of_reviewed_activities = cursor.fetchall()
 
             # Select the 5 most reported users (counted if the severity is medium or high only)
@@ -483,7 +483,7 @@ def admin_index(request):
             list_of_user_reports = cursor.fetchall()
 
             # Select activities created by administrators
-            cursor.execute("SELECT * FROM activity a, users u WHERE a.inviter = u.email AND u.type = 'administrator' ORDER BY a.start_date_time ASC")
+            cursor.execute("SELECT * FROM activity a, users u WHERE a.driver = u.email AND u.type = 'administrator' ORDER BY a.start_date_time ASC")
             list_of_activities_by_admin = cursor.fetchall()
 
         context = {
@@ -672,7 +672,7 @@ def admin_activity(request):
 
         with connection.cursor() as cursor:
             # Get the list of activities
-            cursor.execute('SELECT a.activity_id, u.full_name as inviter, a.category, a.activity_name, a.start_date_time, a.venue, count_participant.count, a.capacity FROM activity a, users u, joins j, (SELECT j1.activity_id, COUNT(j1.participant) as count FROM activity a1, joins j1 WHERE j1.activity_id = a1.activity_id GROUP BY j1.activity_id) AS count_participant WHERE a.inviter = u.email AND j.activity_id = a.activity_id AND j.participant = u.email AND count_participant.activity_id = a.activity_id AND count_participant.count <= a.capacity GROUP BY a.activity_id, u.full_name, a.category, a.activity_name, a.start_date_time, a.venue, count_participant.count, a.capacity ORDER BY a.start_date_time ASC')
+            cursor.execute('SELECT a.activity_id, u.full_name as driver, a.category, a.start_point, a.start_date_time, a.destination, count_passenger.count, a.capacity FROM activity a, users u, joins j, (SELECT j1.activity_id, COUNT(j1.passenger) as count FROM activity a1, joins j1 WHERE j1.activity_id = a1.activity_id GROUP BY j1.activity_id) AS count_passenger WHERE a.driver = u.email AND j.activity_id = a.activity_id AND j.passenger = u.email AND count_passenger.activity_id = a.activity_id AND count_passenger.count <= a.capacity GROUP BY a.activity_id, u.full_name, a.category, a.start_point, a.start_date_time, a.destination, count_passenger.count, a.capacity ORDER BY a.start_date_time ASC')
             list_of_activities = cursor.fetchall()
 
         context['list_of_activities'] = list_of_activities
@@ -706,16 +706,16 @@ def admin_activity_create(request):
 
                 # TODO: Add the checking of inputs
                 # Insert the activity into the database
-                cursor.execute('INSERT INTO activity (inviter,activity_name,category,start_date_time,venue,capacity) VALUES (%s,%s,%s,%s,%s,%s)', [
+                cursor.execute('INSERT INTO activity (driver,start_point,category,start_date_time,destination,capacity) VALUES (%s,%s,%s,%s,%s,%s)', [
                     request.session.get(
-                        "email"), request.POST['activity_name'], request.POST['category'], request.POST['start_date_time'],
-                    request.POST['venue'], request.POST['capacity']
+                        "email"), request.POST['start_point'], request.POST['category'], request.POST['start_date_time'],
+                    request.POST['destination'], request.POST['capacity']
                 ])
                 # Get the activity details
-                cursor.execute('SELECT activity_id FROM activity WHERE inviter =  %s AND activity_name = %s AND category = %s AND start_date_time = %s AND venue = %s AND capacity = %s', [
+                cursor.execute('SELECT activity_id FROM activity WHERE driver =  %s AND start_point = %s AND category = %s AND start_date_time = %s AND destination = %s AND capacity = %s', [
                     request.session.get(
-                        "email"), request.POST['activity_name'], request.POST['category'], request.POST['start_date_time'],
-                    request.POST['venue'], request.POST['capacity']
+                        "email"), request.POST['start_point'], request.POST['category'], request.POST['start_date_time'],
+                    request.POST['destination'], request.POST['capacity']
                 ])
                 activity_id = cursor.fetchone()
                 # Joining the current user to the joins database
@@ -755,9 +755,9 @@ def admin_activity_edit(request, activity_id):
 
             with connection.cursor() as cursor:
 
-                cursor.execute('UPDATE activity SET category = %s, activity_name = %s, start_date_time = %s, venue = %s, capacity = %s WHERE activity_id = %s', [
-                    request.POST['category'], request.POST['activity_name'], request.POST[
-                        'start_date_time'], request.POST['venue'], request.POST['capacity'], activity_id
+                cursor.execute('UPDATE activity SET category = %s, start_point = %s, start_date_time = %s, destination = %s, capacity = %s WHERE activity_id = %s', [
+                    request.POST['category'], request.POST['start_point'], request.POST[
+                        'start_date_time'], request.POST['destination'], request.POST['capacity'], activity_id
                 ])
                 cursor.execute('SELECT * FROM activity WHERE activity_id=%s', [activity_id])
                 this_activity = cursor.fetchone()
@@ -827,7 +827,7 @@ def admin_review(request):
         return HttpResponseRedirect(reverse('admin_index'))
 
 
-def admin_review_delete(request, activity_id, timestamp, participant_email):
+def admin_review_delete(request, activity_id, timestamp, passenger_email):
     '''
     admin_review_delete view function responsible for the deleting reviews from the database from the admin side.
     Takes in the request and the activity ID and executes a SQL query to delete the review from the database.
@@ -835,7 +835,7 @@ def admin_review_delete(request, activity_id, timestamp, participant_email):
         request: HTTP request
         activity_id: activity ID of the review that wants to be deleted
         timestamp: timestamp of the review that wants to be deleted
-        participant_email: participant of the review that wants to be deleted
+        passenger_email: passenger of the review that wants to be deleted
     Return:
         HTTP Response Redirect to the admin_review page
     '''
@@ -848,8 +848,8 @@ def admin_review_delete(request, activity_id, timestamp, participant_email):
 
             with connection.cursor() as cursor:
 
-                cursor.execute('DELETE FROM review WHERE activity_id = %s AND timestamp = %s AND participant = %s', [
-                    activity_id, timestamp, participant_email])
+                cursor.execute('DELETE FROM review WHERE activity_id = %s AND timestamp = %s AND passenger = %s', [
+                    activity_id, timestamp, passenger_email])
 
         return HttpResponseRedirect(reverse('admin_review'))
 
