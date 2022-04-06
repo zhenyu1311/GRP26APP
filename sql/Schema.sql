@@ -38,17 +38,17 @@ CREATE TABLE IF NOT EXISTS activity (
 
 CREATE TABLE IF NOT EXISTS joins (
   activity_id INT REFERENCES activity(activity_id) NOT NULL,
-  participant VARCHAR(64) REFERENCES users(email) NOT NULL,
-  PRIMARY KEY (activity_id,participant)
+  passenger VARCHAR(64) REFERENCES users(email) NOT NULL,
+  PRIMARY KEY (activity_id,passenger)
 );
 
 CREATE TABLE IF NOT EXISTS review (
   activity_id INT REFERENCES activity(activity_id) NOT NULL,
   timestamp TIMESTAMP NOT NULL,
-  participant VARCHAR(64) REFERENCES users(email) NOT NULL,
+  passenger VARCHAR(64) REFERENCES users(email) NOT NULL,
   rating INT NOT NULL,
   comment VARCHAR(4096) NOT NULL,
-  PRIMARY KEY (activity_id,timestamp,participant)
+  PRIMARY KEY (activity_id,timestamp,passenger)
 );
 
 CREATE TABLE IF NOT EXISTS report (
