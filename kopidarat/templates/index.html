@@ -52,11 +52,11 @@
     <h1>Hello {{full_name}}!</h1>  
 
     <br/><br>
-    <a href="{% url 'create_activity' %}"> Start invite </a>
+    <a href="{% url 'create_activities' %}"> Start invite </a>
     <br/><br>
     <a href="{% url 'report' %}"> New Report </a>
     <br/><br>
-    <a href="{% url 'user_activity' %}"> Current and history rides </a>
+    <a href="{% url 'user_activities' %}"> Current and history rides </a>
     <br/><br>
     <a href="{% url 'become_admin' %}"> I want to be an admin </a>
     <br/><br>
@@ -76,16 +76,16 @@
           <th> Capacity </th>
           <th> Join </th>
       </thead>
-      {% for activity in recommended_activities %}
+      {% for activities in recommended_activities %}
       <tr>
-        <td> {{ activity.0 }}</td>
-        <td> {{ activity.3 }}</td>
-        <td> {{ activity.1 }}</td>
-        <td> {{ activity.4 }}</td>
-        <td> {{ activity.5 }}</td>
-        <td> {{ activity.6 }}</td>
-        <td> {{ activity.6 }}</td>
-        <td> <a class='button' href="{% url 'join' activity.0 %}" class="text-decoration-none">Join</a> </td>
+        <td> {{ activities.0 }}</td>
+        <td> {{ activities.3 }}</td>
+        <td> {{ activities.1 }}</td>
+        <td> {{ activities.4 }}</td>
+        <td> {{ activities.5 }}</td>
+        <td> {{ activities.6 }}</td>
+        <td> {{ activities.6 }}</td>
+        <td> <a class='button' href="{% url 'join' activities.0 %}" class="text-decoration-none">Join</a> </td>
       </tr>
       {% endfor %}
     </table>
@@ -122,16 +122,16 @@
           <th> Capacity </th>
           <th> Join </th>
       </thead>
-      {% for activity in records %}
+      {% for activities in activities %}
       <tr>
-        <td> {{ activity.0 }}</td>
-        <td> {{ activity.3 }}</td>
-        <td> {{ activity.1 }}</td>
-        <td> {{ activity.4 }}</td>
-        <td> {{ activity.5 }}</td>
-        <td> {{ activity.6 }}</td> #
-        <td> {{ activity.6 }}</td>
-        <td> <a class='button' href="{% url 'join' activity.0 %}" class="text-decoration-none">Join</a> </td>
+        <td> {{ activities.0 }}</td>
+        <td> {{ activities.3 }}</td>
+        <td> {{ activities.1 }}</td>
+        <td> {{ activities.4 }}</td>
+        <td> {{ activities.5 }}</td>
+        <td> {{ activities.6 }}</td> #
+        <td> {{ activities.6 }}</td>
+        <td> <a class='button' href="{% url 'join' activities.0 %}" class="text-decoration-none">Join</a> </td>
       </tr>
       {% endfor %}
   </body>
