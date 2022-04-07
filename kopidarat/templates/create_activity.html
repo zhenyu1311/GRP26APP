@@ -67,34 +67,31 @@
   <div class="container">
   <div class="form-wrap">
   <body>
-    <h2>Add New Activity</h2>
+    <h2>Start New Invite</h2>
     <a href="index">Back to home</a>
 
     <form action="{% url 'create_activity' %}" method="post">
       {% csrf_token %}
-      Activity Name
       <div class="form-group">
         <input
           class="form-control"
           autofocus
           type="text"
           name="activity_name"
-          placeholder="Start Point Name"
+          placeholder="Starting Point"
         />
       </div>
-      Category
+      
+      Destination
       <div class="form-group">
-
-        <div class="form-group">
-          <select id="category" name="category">
-            {% for category in categories %}
-              <option value= "{{category.0}}" >{{category.0}}</option>
-            {% endfor %} 
-          
-          </select>
-  
-        </div>
+        <input
+          class="form-control"
+          type="text"
+          name="destination"
+          placeholder="Destination"
+        />
       </div>
+
       Start Date and Time
       <div class="form-group">
         <input
@@ -103,15 +100,17 @@
           name="start_date_time"
         />
       </div>
-      Venue
+
+      Price
       <div class="form-group">
         <input
           class="form-control"
           type="text"
-          name="venue"
-          placeholder="Venue"
+          name="price"
+          placeholder="pricing"
         />
       </div>
+
       Capacity
       <div class="form-group">
         <input class="form-control" type="number" name="capacity" min="2" max ="6" placeholder="Capacity (between 2 to 6)"/>
