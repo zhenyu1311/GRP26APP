@@ -221,13 +221,13 @@ def user_activity(request):
             past_driver_list = cursor.fetchall()
 
             # Get the table of upcoming activities where the current user is the driver
-            cursor.execute('SELECT * FROM activity a, users u WHERE a.driver = u.email AND a.driver = %s AND a.start_date_time > NOW() ORDER BY a.start_date_time ASC', [
+            cursor.execute('SELECT * FROM activity a, users u WHERE a.driver = u.full_name AND a.driver = %s AND a.start_date_time > NOW() ORDER BY a.start_date_time ASC', [
                 user_email
             ])
             driver_list = cursor.fetchall()
 
             # Get the table of upcoming activities created by other user where the user has signed up for
-            cursor.execute('SELECT a.activity_id, u.full_name, a.price, a.start_point, a.start_date_time, a.destination FROM joins j, activity a, users u WHERE j.activity_id = a.activity_id AND a.driver = u.email AND a.driver <> j.passenger AND j.passenger = %s AND NOW() <= a.start_date_time ORDER BY a.start_date_time ASC', [
+            cursor.execute('SELECT a.activity_id, u.full_name, a.price, a.start_point, a.start_date_time, a.destination FROM joins j, activity a, users u WHERE j.activity_id = a.activity_id AND a.driver = u.full_name AND a.driver <> j.passenger AND j.passenger = %s AND NOW() <= a.start_date_time ORDER BY a.start_date_time ASC', [
                 user_email
             ])
             upcoming_activities_list = cursor.fetchall()
@@ -239,7 +239,7 @@ def user_activity(request):
             joined_activities_list = cursor.fetchall()
 
             # Get table of reviews that user has created
-            cursor.execute('SELECT a.activity_id, r.timestamp, r.comment FROM review r, activity a, users u WHERE r.activity_id = a.activity_id AND r.passenger = u.email AND r.passenger = %s ORDER BY a.start_date_time ASC', [
+            cursor.execute('SELECT a.activity_id, r.timestamp, r.comment FROM review r, activity a, users u WHERE r.activity_id = a.activity_id AND r.passenger = u.full_name AND r.passenger = %s ORDER BY a.start_date_time ASC', [
                 user_email
             ])
             reviews_list = cursor.fetchall()
