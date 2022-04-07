@@ -471,32 +471,20 @@ def admin_index(request):
             list_of_requests = cursor.fetchall()
 
             # Select the top 5 most active users (identified by usernames) based on the number of activities joined
-            cursor.execute(
-                'SELECT u.username, COUNT(j.participant) AS total_join FROM users u, joins j WHERE u.email = j.participant GROUP BY u.username ORDER BY total_join DESC ,u.username ASC LIMIT 5')
-            list_of_active_users = cursor.fetchall()
+            
 
             # Select the top 5 most inactive users (identified by usernames) based on the number of activities joined
-            cursor.execute(
-                'SELECT u.username, COUNT(j.participant) AS total_join FROM users u, joins j WHERE u.email = j.participant GROUP BY u.username ORDER BY total_join ASC ,u.username ASC LIMIT 5')
-            list_of_inactive_users = cursor.fetchall()
+            
 
             # Select the top 5 activities with the most reviews, by counting the number of reviews
-            cursor.execute('SELECT a.activity_id,a.activity_name, COUNT(r.comment) AS total_reviews FROM activity a, review r WHERE a.activity_id = r.activity_id GROUP BY a.activity_id, a.activity_name ORDER BY total_reviews DESC, a.activity_id ASC LIMIT 5')
-            list_of_reviewed_activities = cursor.fetchall()
-
-            # Select the 5 most reported users (counted if the severity is medium or high only)
-            cursor.execute("SELECT u.username, COUNT(r.comment) AS total_reports FROM users u, report r WHERE u.email = r.report_user AND (r.severity = 'medium' OR r.severity = 'high') GROUP BY u.username ORDER BY total_reports DESC, u.username ASC LIMIT 5")
-            list_of_user_reports = cursor.fetchall()
+            
 
             # Select activities created by administrators
             cursor.execute("SELECT * FROM activity a, users u WHERE a.driver = u.email AND u.type = 'administrator' ORDER BY a.start_date_time ASC")
             list_of_activities_by_admin = cursor.fetchall()
 
         context = {
-            'list_of_active_users': list_of_active_users,
-            'list_of_inactive_users': list_of_inactive_users,
-            'list_of_reviewed_activities': list_of_reviewed_activities,
-            'list_of_user_reports': list_of_user_reports,
+
             'list_of_activities_by_admin': list_of_activities_by_admin,
             'list_of_requests':list_of_requests
         }
