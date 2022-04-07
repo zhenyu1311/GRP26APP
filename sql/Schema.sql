@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS activity (
 	ON DELETE CASCADE
   	DEFERRABLE INITIALLY DEFERRED
 	NOT NULL,
+  
   start_point VARCHAR(128) NOT NULL,
   start_date_time TIMESTAMP NOT NULL,
   destination VARCHAR(128) NOT NULL,
@@ -70,8 +71,9 @@ CREATE TABLE IF NOT EXISTS random_report (
 ); 
 
 CREATE TABLE IF NOT EXISTS requests(
-	username VARCHAR(64) PRIMARY KEY ,
-	reason VARCHAR(128)
+	username VARCHAR(64) REFERENCES users(email) ,
+	reason VARCHAR(128),
+	PRIMARY KEY(username,reason)
 );
 
 CREATE TABLE IF NOT EXISTS category (

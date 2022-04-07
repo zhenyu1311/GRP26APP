@@ -127,7 +127,7 @@ def become_admin(request):
 
                 return redirect('index')
             except IntegrityError:
-                status = 'This username already requested'
+                status = 'The same user cannot apply for admin multiple times with the same reason'
   
     context['message'] = status
     return render(request, "become_admin.html", context)
@@ -158,7 +158,7 @@ def create_activity(request):
 
             with connection.cursor() as cursor:
                 cursor.execute('CALL create_new_activity(%s,%s,%s,%s,%s,%s)',[
-                    user_email,request.POST['category'],request.POST['activity_name'],request.POST['start_date_time'],request.POST['venue'], request.POST['capacity']])
+                    user_email,request.POST['price'],request.POST['start_point'],request.POST['start_date_time'],request.POST['destination'], request.POST['capacity']])
                 return HttpResponseRedirect(reverse("user_activity"))
         else:
             return render(request, 'create_activity.html', context)

@@ -15,22 +15,24 @@
           class="form-control"
           autofocus
           type="text"
-          name="activity_name"
+          name="start_point"
           placeholder="Start Point Name"
         />
-      </div>
-      Category
-      <div class="form-group">
-
-        <div class="form-group">
-          <select id="category" name="category">
-            {% for category in categories %}
-              <option value= "{{category.0}}" >{{category.0}}</option>
-            {% endfor %} 
-          
-          </select>
-  
+        
         </div>
+      
+      Price
+      <div class="form-group">
+        <input
+          class="form-control"
+          type="number"
+          name="price"
+          placeholder="price"
+        />
+      </div>
+      
+   
+      
       </div>
       Start Date and Time
       <div class="form-group">
@@ -40,18 +42,19 @@
           name="start_date_time"
         />
       </div>
+      
       Destination
       <div class="form-group">
         <input
           class="form-control"
           type="text"
-          name="venue"
-          placeholder="Venue"
+          name="destination"
+          placeholder="destination"
         />
       </div>
       Capacity
       <div class="form-group">
-        <input class="form-control" type="number" name="capacity" min="2" max ="6" placeholder="Capacity (between 2 to 6)"/>
+        <input class="form-control" type="number" name="capacity" min="1" max ="6" placeholder="Capacity (between 2 to 6)"/>
       </div>
       <input class="btn btn-primary" type="submit" value="Create Ride" />
     </form>
