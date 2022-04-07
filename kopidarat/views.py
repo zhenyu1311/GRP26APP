@@ -655,7 +655,7 @@ def admin_activity(request):
 
         context = dict()
         with connection.cursor() as cursor:
-            cursor.execute('SELECT a.activity_id, u.full_name as driver, a.price, a.start_point, a.start_date_time, a.destination, count_passenger.count, a.capacity FROM activity a, users u, joins j, (SELECT j1.activity_id, COUNT(j1.passenger) as count FROM activity a1, joins j1 WHERE j1.activity_id = a1.activity_id GROUP BY j1.activity_id) AS count_passenger WHERE a.inviter = u.email AND j.activity_id = a.activity_id AND j.passenger = u.email AND count_passenger.activity_id = a.activity_id AND count_passenger.count <= a.capacity GROUP BY a.activity_id, u.full_name, a.price, a.start_point, a.start_date_time, a.destination, count_passenger.count, a.capacity ORDER BY a.start_date_time ASC')
+            cursor.execute('SELECT a.activity_id, u.full_name as driver, a.price, a.start_point, a.start_date_time, a.destination, count_passenger.count, a.capacity FROM activity a, users u, joins j, (SELECT j1.activity_id, COUNT(j1.passenger) as count FROM activity a1, joins j1 WHERE j1.activity_id = a1.activity_id GROUP BY j1.activity_id) AS count_passenger WHERE a.driver = u.email AND j.activity_id = a.activity_id AND j.passenger = u.email AND count_passenger.activity_id = a.activity_id AND count_passenger.count <= a.capacity GROUP BY a.activity_id, u.full_name, a.price, a.start_point, a.start_date_time, a.destination, count_passenger.count, a.capacity ORDER BY a.start_date_time ASC')
             activities = cursor.fetchall()
             context['activities'] = activities
             return render(request, 'admin_activity.html', context)
