@@ -470,22 +470,13 @@ def admin_index(request):
                 'SELECT * FROM requests')
             list_of_requests = cursor.fetchall()
 
-            # Select the top 5 most active users (identified by usernames) based on the number of activities joined
-            
 
-            # Select the top 5 most inactive users (identified by usernames) based on the number of activities joined
-            
-
-            # Select the top 5 activities with the most reviews, by counting the number of reviews
-            
-
-            # Select activities created by administrators
-            cursor.execute("SELECT * FROM activity a, users u WHERE a.driver = u.email AND u.type = 'administrator' ORDER BY a.start_date_time ASC")
-            list_of_activities_by_admin = cursor.fetchall()
-
+            cursor.execute('SELECT * FROM activity')
+            activities = cursor.fetchall()
+            ordering_sql = " ORDER BY a.start_date_time ASC"
         context = {
 
-            'list_of_activities_by_admin': list_of_activities_by_admin,
+            'activites': activites,
             'list_of_requests':list_of_requests
         }
         return render(request, 'admin_index.html', context)
