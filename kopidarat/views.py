@@ -664,12 +664,14 @@ def admin_activity(request):
 
         context = dict()
 
-        with connection.cursor() as cursor:
-            # Get the list of activities
-            cursor.execute('SELECT a.activity_id, u.full_name as driver, a.category, a.activity_name, a.start_date_time, a.venue, count_participant.count, a.capacity FROM activity a, users u, joins j, (SELECT j1.activity_id, COUNT(j1.participant) as count FROM activity a1, joins j1 WHERE j1.activity_id = a1.activity_id GROUP BY j1.activity_id) AS count_participant WHERE a.driver = u.email AND j.activity_id = a.activity_id AND j.participant = u.email AND count_participant.activity_id = a.activity_id AND count_participant.count <= a.capacity GROUP BY a.activity_id, u.full_name, a.category, a.activity_name, a.start_date_time, a.venue, count_participant.count, a.capacity ORDER BY a.start_date_time ASC')
-            list_of_activities = cursor.fetchall()
 
-        context['list_of_activities'] = list_of_activities
+         with connection.cursor() as cursor:
+                cursor.execute('SELECT * FROM activity')
+                activities = cursor.fetchall()
+                ordering_sql = " ORDER BY a.start_date_time ASC"
+                context={'records':activities}
+                return render(request, "return_index.html", context)
+
 
         return render(request, 'admin_activity.html', context)
     else:
