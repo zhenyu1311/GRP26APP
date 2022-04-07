@@ -215,7 +215,7 @@ def user_activity(request):
         with connection.cursor() as cursor:
 
             # Get the table of past activities where the current user is the driver
-            cursor.execute('SELECT * FROM activity a, users u WHERE a.driver = u.email AND a.driver = %s AND a.start_date_time < NOW() ORDER BY a.start_date_time ASC', [
+            cursor.execute('SELECT * FROM activity a, users u WHERE a.driver = u.full_name AND a.driver = %s AND a.start_date_time < NOW() ORDER BY a.start_date_time ASC', [
                 user_email
             ])
             past_driver_list = cursor.fetchall()
