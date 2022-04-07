@@ -474,8 +474,8 @@ def admin_index(request):
             cursor.execute('SELECT * FROM activity')
             activities = cursor.fetchall()
             ordering_sql = " ORDER BY a.start_date_time ASC"
-        context = {
 
+        context = {
             'activities': activities,
             'list_of_requests':list_of_requests
         }
