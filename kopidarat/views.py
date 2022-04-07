@@ -340,7 +340,7 @@ def delete_activity(request, activity_id):
         return HttpResponseRedirect(reverse("index"))
 
 
-def passengers(request, activity_id):
+def passenger(request, activity_id):
     """ 
     View function that enables people who have signed up in the activity to view everyone else who signed up.
     Takes in the request and activity_id of the event and returns a render function that renders the 
