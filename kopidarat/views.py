@@ -215,13 +215,13 @@ def user_activity(request):
         with connection.cursor() as cursor:
 
             # Get the table of past activities where the current user is the driver
-            cursor.execute('SELECT a.activity_id, u.full_name, a.price, a.start_point, a.start_date_time, a.destination FROM joins j, activity a, users u WHERE j.activity_id = a.activity_id AND a.passenger = u.email AND a.driver <> j.passenger AND j.driver = %s AND NOW() > a.start_date_time ORDER BY a.start_date_time ASC', [
+            cursor.execute('SELECT * FROM activity a, users u WHERE a.driver = u.email AND a.driver = %s AND a.start_date_time < NOW() ORDER BY a.start_date_time ASC', [
                 user_email
             ])
             past_driver_list = cursor.fetchall()
 
             # Get the table of upcoming activities where the current user is the driver
-            cursor.execute('SELECT a.activity_id, u.full_name, a.price, a.start_point, a.start_date_time, a.destination FROM joins j, activity a, users u WHERE j.activity_id = a.activity_id AND a.passenger = u.email AND a.driver <> j.passenger AND j.driver = %s AND NOW() > a.start_date_time ORDER BY a.start_date_time ASC', [
+            cursor.execute('SELECT * FROM activity a, users u WHERE a.driver = u.email AND a.driver = %s AND a.start_date_time > NOW() ORDER BY a.start_date_time ASC', [
                 user_email
             ])
             driver_list = cursor.fetchall()
