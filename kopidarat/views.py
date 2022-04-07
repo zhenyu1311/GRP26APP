@@ -127,7 +127,7 @@ def become_admin(request):
 
                 return redirect('index')
             except IntegrityError:
-                status = 'This username already requested'
+                status = 'The same user cannot apply for admin multiple times with the same reason'
   
     context['message'] = status
     return render(request, "become_admin.html", context)
