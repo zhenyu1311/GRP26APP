@@ -223,6 +223,7 @@ def user_activity(request):
             # Get the table of upcoming activities where the current user is the driver
             cursor.execute('SELECT a.activity_id, u.full_name, a.price, a.start_point, a.start_date_time, a.destination FROM joins j, activity a, users u WHERE j.activity_id = a.activity_id AND a.passenger = u.email AND a.driver <> j.passenger AND j.driver = %s AND NOW() > a.start_date_time ORDER BY a.start_date_time ASC', [
                 user_email
+            ])
             driver_list = cursor.fetchall()
 
             # Get the table of upcoming activities created by other user where the user has signed up for
