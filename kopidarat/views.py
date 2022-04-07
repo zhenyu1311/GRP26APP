@@ -148,11 +148,11 @@ def create_activity(request):
     user_email = request.session.get("email", False)
 
     if user_email is not False:
-        context = {}
+        '''context = {}
         with connection.cursor() as cursor:
             cursor.execute('SELECT * FROM category')
             categories = cursor.fetchall()
-            context["categories"] = categories
+            context["categories"] = categories'''
 
         if request.method == 'POST':
 
@@ -161,7 +161,7 @@ def create_activity(request):
                     user_email,request.POST['price'],request.POST['start_point'],request.POST['start_date_time'],request.POST['destination'], request.POST['capacity']])
                 return HttpResponseRedirect(reverse("user_activity"))
         else:
-            return render(request, 'create_activity.html', context)
+            return render(request, 'create_activity.html', '''context''')
     return HttpResponseRedirect(reverse("index"))
 
 
