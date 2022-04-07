@@ -654,17 +654,13 @@ def admin_activity(request):
     if user_type == 'administrator' and user_email is not False:
 
         context = dict()
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT * FROM activity')
 
-
-         with connection.cursor() as cursor:
-                cursor.execute('SELECT * FROM activity')
-                activities = cursor.fetchall()
-                ordering_sql = " ORDER BY a.start_date_time ASC"
-                context={'records':activities}
-                return render(request, "return_index.html", context)
-
-
-        return render(request, 'admin_activity.html', context)
+            activities = cursor.fetchall()
+            ordering_sql = " ORDER BY a.start_date_time ASC"
+            context={'records':activities}
+            return render(request, 'admin_activity.html', context)
     else:
         return HttpResponseRedirect(reverse('admin_index'))
 
