@@ -59,7 +59,7 @@ urlpatterns = [
     path("passenger/<int:activity_id>", views.passenger, name = 'passenger'),
 
     # Create review page
-    path("review/<int:activity_id>", views.create_review, name='review'),
+    path("review", views.create_review, name='review'),
 
     # Create report page
     path("report", views.create_report, name='report'),
