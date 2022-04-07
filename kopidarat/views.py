@@ -399,7 +399,7 @@ def create_review(request,activity_id):
     context={}
     if user_email is not False:
         with connection.cursor() as cursor:
-            cursor.execute('SELECT u.full_name AS name, a.activity_name AS activity FROM activity a, users u WHERE a.activity_id=%s AND u.email=a.driver',[activity_id])
+            cursor.execute('SELECT u.full_name AS name, a.start_point AS activity FROM activity a, users u WHERE a.activity_id=%s AND u.email=a.driver',[activity_id])
             activity_details = cursor.fetchone()
             context["activity_details"]=activity_details
             if request.method == 'POST':
