@@ -413,7 +413,7 @@ def create_review(request,activity_id):
                     message=str(e)
                     context["message"]=message
 
-        return render(request, 'review.html', {"message": message})
+        return HttpResponseRedirect(reverse("user_activity"))
     else:
         return HttpResponseRedirect(reverse("index"))
 
