@@ -24,17 +24,17 @@ $$ LANGUAGE plpgsql;
 
 
 CREATE OR REPLACE PROCEDURE create_new_activity(u_email VARCHAR,
-											   u_category VARCHAR,
-												u_activity_name VARCHAR,
+											   u_price VARCHAR,
+												u_start_point VARCHAR,
 											   u_start_date_time TIMESTAMP,
-											   u_venue VARCHAR,
+											   u_destination VARCHAR,
 											   u_capacity INTEGER) AS $$
 DECLARE
 	id INTEGER;
 BEGIN
-	INSERT INTO activity (inviter,category,activity_name,start_date_time,venue,capacity) VALUES (u_email,u_category,u_activity_name,u_start_date_time,u_venue,u_capacity)
+	INSERT INTO activity (driver,price,start_point,start_date_time,destination,capacity) VALUES (u_email,u_price,u_start_point,u_start_date_time,u_destination,u_capacity)
 	RETURNING activity_id INTO id;
-	INSERT INTO joins (activity_id,participant) VALUES (id,u_email);
+	INSERT INTO joins (activity_id,passenger) VALUES (id,u_email);
 END
 $$ LANGUAGE plpgsql;
 
@@ -73,20 +73,20 @@ EXECUTE FUNCTION check_capacity_func();
 
 CREATE OR REPLACE FUNCTION check_review_func() RETURNS TRIGGER AS $$
 DECLARE 
-	participant VARCHAR;
+	passenger VARCHAR;
 	activity_happened NUMERIC;
 BEGIN
-	SELECT j.participant INTO participant
+	SELECT j.passenger INTO passenger
 	FROM joins j 
 	WHERE j.activity_id = NEW.activity_id 
-	AND j.participant = NEW.participant;
+	AND j.passenger = NEW.passenger;
 	
 	SELECT a.activity_id INTO activity_happened
 	FROM activity a 
 	WHERE a.activity_id = NEW.activity_id
 	AND a.start_date_time < NOW();
 	
-	IF participant IS NULL THEN
+	IF passenger IS NULL THEN
 		RAISE EXCEPTION 'You did not register for this event, 
 		hence you are not eligible to give a review.';
 		RETURN NULL;
