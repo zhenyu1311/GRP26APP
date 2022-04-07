@@ -476,7 +476,7 @@ def admin_index(request):
             ordering_sql = " ORDER BY a.start_date_time ASC"
         context = {
 
-            'activites': activites,
+            'activities': activities,
             'list_of_requests':list_of_requests
         }
         return render(request, 'admin_index.html', context)
