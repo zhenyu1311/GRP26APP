@@ -30,10 +30,11 @@ CREATE TABLE IF NOT EXISTS activity (
 	ON DELETE CASCADE
   	DEFERRABLE INITIALLY DEFERRED
 	NOT NULL,
+  price NUMERIC NOT NULL,
   start_point VARCHAR(128) NOT NULL,
   start_date_time TIMESTAMP NOT NULL,
   destination VARCHAR(128) NOT NULL,
-  price NUMERIC NOT NULL,
+ 
   capacity INTEGER NOT NULL CHECK (capacity >= 1 AND capacity <= 6)
 );
 
