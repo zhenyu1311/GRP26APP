@@ -9,7 +9,7 @@
 
     <form action="{% url 'create_activity' %}" method="post">
       {% csrf_token %}
-      Activity Name
+      Start Point Name
       <div class="form-group">
         <input
           class="form-control"
@@ -40,7 +40,7 @@
           name="start_date_time"
         />
       </div>
-      Venue
+      Destination
       <div class="form-group">
         <input
           class="form-control"
