@@ -63,44 +63,16 @@
     <a href="{% url 'logout' %}"> Logout </a>
     <br/><br>
     
-<!--     <h2> Recommended For You</h2>
-    <br/>
-    <table border=1>
-      <thead>
-          <th> Ride id </th>
-          <th> Start Date Time </th>
-          <th> Driver </th>
-          <th> Start Point </th>
-          <th> Price </th>
-          <th> Joined </th>
-          <th> Capacity </th>
-          <th> Join </th>
-      </thead>
-      {% for activity in recommended_activities %}
-      <tr>
-        <td> {{ activity.0 }}</td>
-        <td> {{ activity.3 }}</td>
-        <td> {{ activity.1 }}</td>
-        <td> {{ activity.4 }}</td>
-        <td> {{ activity.5 }}</td>
-        <td> {{ activity.6 }}</td>
-        <td> {{ activity.6 }}</td>
-        <td> <a class='button' href="{% url 'join' activity.0 %}" class="text-decoration-none">Join</a> </td>
-      </tr>
-      {% endfor %}
-    </table>
-    <br/> -->
+
 
 
     <h2> Available Activities </h2>
     <form action="{% url 'index' %}" method="post">
       {% csrf_token %}
-      <label for="category_id" class="control-label requiredField">Categories (multi-select with ctrl)</label> 
-      <div class="controls"><select name="categories" id="categories" multiple size="10">
-        {% for category in categories %}
-        <option value= "{{category.0}}" >{{category.0}}</option>
-        {% endfor %} 
-        </select> </div>
+       
+      
+        
+        
         <label for="period_id" class="control-label requiredField">Show Rides Within</label> 
       <div class="controls"><select name="display_period" id="display_period" multiple size="1">
         <option value= "1_week" >1 Week</option>
