@@ -45,7 +45,7 @@ DECLARE
 	curr_participation INTEGER;
 	activity_capacity INTEGER;
 BEGIN
-	SELECT COUNT(*)-1 INTO curr_participation
+	SELECT COUNT(*) INTO curr_participation
 	FROM joins j
 	WHERE j.activity_id = NEW.activity_id;
 	
