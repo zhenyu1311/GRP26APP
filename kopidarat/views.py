@@ -148,11 +148,11 @@ def create_activity(request):
     user_email = request.session.get("email", False)
 
     if user_email is not False:
-        '''context = {}
-        with connection.cursor() as cursor:
-            cursor.execute('SELECT * FROM category')
-            categories = cursor.fetchall()
-            context["categories"] = categories'''
+        # context = {}
+        # with connection.cursor() as cursor:
+        #     cursor.execute('SELECT * FROM category')
+        #     categories = cursor.fetchall()
+        #     context["categories"] = categories
 
         if request.method == 'POST':
 
@@ -161,7 +161,7 @@ def create_activity(request):
                     user_email,request.POST['price'],request.POST['start_point'],request.POST['start_date_time'],request.POST['destination'], request.POST['capacity']])
                 return HttpResponseRedirect(reverse("user_activity"))
         else:
-            return render(request, 'create_activity.html', '''context''')
+            return render(request, 'create_activity.html') # removed context from (request, 'create_activity.html', context)
     return HttpResponseRedirect(reverse("index"))
 
 
@@ -215,19 +215,19 @@ def user_activity(request):
         with connection.cursor() as cursor:
 
             # Get the table of past activities where the current user is the driver
-            cursor.execute('SELECT * FROM activity a, users u WHERE a.driver = u.full_name AND a.driver = %s AND a.start_date_time < NOW() ORDER BY a.start_date_time ASC', [
+            cursor.execute('SELECT * FROM activity a, users u WHERE a.driver = u.email AND a.driver = %s AND a.start_date_time < NOW() ORDER BY a.start_date_time ASC', [
                 user_email
             ])
             past_driver_list = cursor.fetchall()
 
             # Get the table of upcoming activities where the current user is the driver
-            cursor.execute('SELECT * FROM activity a, users u WHERE a.driver = u.full_name AND a.driver = %s AND a.start_date_time > NOW() ORDER BY a.start_date_time ASC', [
+            cursor.execute('SELECT * FROM activity a, users u WHERE a.driver = u.email AND a.driver = %s AND a.start_date_time > NOW() ORDER BY a.start_date_time ASC', [
                 user_email
             ])
             driver_list = cursor.fetchall()
 
             # Get the table of upcoming activities created by other user where the user has signed up for
-            cursor.execute('SELECT a.activity_id, u.full_name, a.price, a.start_point, a.start_date_time, a.destination FROM joins j, activity a, users u WHERE j.activity_id = a.activity_id AND a.driver = u.full_name AND a.driver <> j.passenger AND j.passenger = %s AND NOW() <= a.start_date_time ORDER BY a.start_date_time ASC', [
+            cursor.execute('SELECT a.activity_id, u.full_name, a.price, a.start_point, a.start_date_time, a.destination FROM joins j, activity a, users u WHERE j.activity_id = a.activity_id AND a.driver = u.email AND a.driver <> j.passenger AND j.passenger = %s AND NOW() <= a.start_date_time ORDER BY a.start_date_time ASC', [
                 user_email
             ])
             upcoming_activities_list = cursor.fetchall()
@@ -239,7 +239,7 @@ def user_activity(request):
             joined_activities_list = cursor.fetchall()
 
             # Get table of reviews that user has created
-            cursor.execute('SELECT a.activity_id, r.timestamp, r.comment FROM review r, activity a, users u WHERE r.activity_id = a.activity_id AND r.passenger = u.full_name AND r.passenger = %s ORDER BY a.start_date_time ASC', [
+            cursor.execute('SELECT a.activity_id, r.timestamp, r.comment FROM review r, activity a, users u WHERE r.activity_id = a.activity_id AND r.passenger = u.email AND r.passenger = %s ORDER BY a.start_date_time ASC', [
                 user_email
             ])
             reviews_list = cursor.fetchall()
