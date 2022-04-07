@@ -397,23 +397,30 @@ def create_review(request,activity_id):
     user_email = request.session.get("email", False)
     message = ""
     context={}
+
     if user_email is not False:
+
         with connection.cursor() as cursor:
             cursor.execute('SELECT u.full_name AS name, a.start_point AS activity FROM activity a, users u WHERE a.activity_id=%s AND u.email=a.driver',[activity_id])
             activity_details = cursor.fetchone()
             context["activity_details"]=activity_details
+
             if request.method == 'POST':
                 try:
-                    cursor.execute('INSERT INTO review VALUES (%s,%s,%s,%s)', [
-                                request.POST['activity_id'], datetime.datetime.now(
-                                ), user_email,
+                    cursor.execute('INSERT INTO review VALUES (%s,%s,%s,%s,%s)', [
+                                activity_id, datetime.datetime.now(
+                                ), user_email,request.POST['rating'],
                                 request.POST['comment']
                             ])
                 except Exception as e:
                     message=str(e)
-                    context["message"]=message
-
-        return render(request, 'review/<int:activity_id>.html', {"message": message})
+                    if 'violates check constraint "review_comment_check"' in message:
+                        message = "Please enter a proper comment for the activity."
+                    else: 
+                        message = "Please enter a proper rating for the activity."
+                    
+        context["message"]=message
+        return render(request, 'review.html', context)
     else:
         return HttpResponseRedirect(reverse("index"))
 
