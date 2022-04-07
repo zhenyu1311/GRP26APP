@@ -24,7 +24,7 @@ $$ LANGUAGE plpgsql;
 
 
 CREATE OR REPLACE PROCEDURE create_new_activity(u_email VARCHAR,
-											   u_price VARCHAR,
+											   u_price NUMERIC,
 												u_start_point VARCHAR,
 											   u_start_date_time TIMESTAMP,
 											   u_destination VARCHAR,
