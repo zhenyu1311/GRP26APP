@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS random_report (
 ); 
 
 CREATE TABLE IF NOT EXISTS requests(
-	username VARCHAR(64) REFRENCESS users(email) ,
+	username VARCHAR(64) REFERENCES users(email) ,
 	reason VARCHAR(128),
 	PRIMARY KEY(username,reason)
 );
