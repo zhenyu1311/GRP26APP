@@ -283,7 +283,7 @@ def update_activity(request, activity_id):
     inside the activity table.
     Argument:
         request: HTTP request
-        activity_id: the activity id of the event
+        activity_id: the ride id of the ride
     Return: 
         render function: renders the update activity page (path: /update_activity)
     '''
@@ -296,20 +296,22 @@ def update_activity(request, activity_id):
             cursor.execute(
                 'SELECT * FROM activity WHERE activity_id=%s', [activity_id])
             this_activity = cursor.fetchone()
+            start_date_time = this_activity[1]
 
         if request.method == 'POST':  # TODO: catch error when there's no post method, e.g. cancel to create activity
             with connection.cursor() as cursor:
 
                 # Execute SQL query to update the values for the particular instance
-                cursor.execute('UPDATE activity SET activity_name = %s, category = %s, start_date_time = %s, venue = %s, capacity = %s WHERE activity_id = %s', [
-                    request.POST['activity_name'], request.POST['category'], request.POST[
-                        'start_date_time'], request.POST['venue'], request.POST['capacity'], activity_id
+                cursor.execute('UPDATE activity SET price = %s, start_date_time = %s, start_point = %s, destination = %s, capacity = %s WHERE activity_id = %s', [
+                    request.POST['price'], request.POST['start_date_time'], request.POST['start_point'], request.POST['destination'], request.POST['capacity'], 
+                    activity_id
                 ])
                 cursor.execute('SELECT * FROM activity WHERE activity_id=%s', [activity_id])
                 this_activity = cursor.fetchone()
             return HttpResponseRedirect(reverse("user_activity"))
 
         context['this_activity'] = this_activity
+        context['start_date_time']=start_date_time
         return render(request,'admin_activity_edit.html',context)
 
     return HttpResponseRedirect(reverse("index"))
