@@ -71,7 +71,7 @@ h2 {
     <div>{{ message }}</div>
     {% endif %}
 
-    <form action="{% url 'review' %}" method="post">
+    <form action="{% url 'review' activity.0 %}" method="post">
       {% csrf_token %}
       <div class="form-group">
         <input
