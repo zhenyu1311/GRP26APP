@@ -62,17 +62,22 @@
 </style>
 
 <html>
+  <head>
+    <title> New report </title>
+  </head>
   <div class="container">
     <div class="form-wrap">
       <body>
 
         <h2> Add New Report</h2>
         <a href="index">Back to home</a>
+        
+        <br/><br>
 
         {% if message %}
         <div>{{ message }}</div>
         {% endif %}
-        
+        <br/><br>
         <form action="{% url 'report' %}" method="post">
           {% csrf_token %}
           <div class="form-group">
