@@ -355,6 +355,7 @@ def passenger(request, activity_id):
     # context dicitonary to store the values
     context = {}
     user_email = request.session.get("email", False)
+    has_passed = False
 
     if user_email is not False:
 
@@ -366,14 +367,19 @@ def passenger(request, activity_id):
             user = cursor.fetchone()
 
         if user is not None:
-            cursor.execute('SELECT u.full_name, u.email, u.phone_number FROM users u, joins j WHERE j.activity_id=%s AND u.email=j.passenger AND u.email<>%s',
-                           [int(activity_id), user_email])
-            passengers = cursor.fetchall()
+            with connection.cursor() as cursor:
+                cursor.execute('SELECT u.full_name, u.email, u.phone_number FROM users u, joins j WHERE j.activity_id=%s AND u.email=j.passenger AND u.email<>%s',
+                            [int(activity_id), user_email])
+                passengers = cursor.fetchall()
 
-            cursor.execute(
-                'SELECT a.activity_name,a.driver FROM activity a WHERE a.activity_id=%s', [activity_id])
-            activity_name, driver = cursor.fetchone()
+                cursor.execute(
+                    'SELECT a.activity_name,a.driver FROM activity a WHERE a.activity_id=%s', [activity_id])
+                activity_name, driver, end_time = cursor.fetchone()
 
+                if end_time < datetime.datetime.now():
+                    has_passed = True
+
+            context["has_passed"] = has_passed
             context["passengers"] = passengers
             context["activity_name"] = activity_name
             context["driver"] = driver
