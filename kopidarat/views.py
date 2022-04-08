@@ -303,8 +303,7 @@ def update_activity(request, activity_id):
 
                 # Execute SQL query to update the values for the particular instance
                 cursor.execute('UPDATE activity SET price = %s, start_date_time = %s, start_point = %s, destination = %s, capacity = %s WHERE activity_id = %s', [
-                    request.POST['price'], request.POST['start_date_time'], request.POST['start_point'], request.POST['destination'], request.POST['capacity'], 
-                    activity_id
+                    request.POST['price'], request.POST['start_date_time'], request.POST['start_point'], request.POST['destination'], request.POST['capacity'], activity_id
                 ])
                 cursor.execute('SELECT * FROM activity WHERE activity_id=%s', [activity_id])
                 this_activity = cursor.fetchone()

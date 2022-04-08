@@ -1,6 +1,6 @@
 {% load static %}
-<style>
-      @import url('https://fonts.googleapis.com/css2?family=Sora:wght@800&display=swap');
+<!-- <style>
+    @import url('https://fonts.googleapis.com/css2?family=Sora:wght@800&display=swap');
       body {
         color: black;
         text-align: center;
@@ -56,20 +56,20 @@
     a:hover {
         color: #17706c;
         text-decoration: underline;
-    }
-</style>
+    }  
+</style> -->
 
 <html>
   <head>
     <title>Update Ride</title>
   </head>
   <body>
-    <div class="container">
-      <div class="form-wrap">
+    <!-- <div class="container">
+      <div class="form-wrap"> -->
         <h2>Update Ride</h2>
         <a href="/user_activity">Back to your rides</a>
 
-        <form method="POST">
+        <form action="{% url 'update_activity' %}" method="POST">
           {% csrf_token %}
           <h4>Price</h4>
           <div class="form-group">
