@@ -355,7 +355,6 @@ def passenger(request, activity_id):
     # context dicitonary to store the values
     context = {}
     user_email = request.session.get("email", False)
-    has_passed = False
 
     if user_email is not False:
 
@@ -374,12 +373,8 @@ def passenger(request, activity_id):
 
                 cursor.execute(
                     'SELECT a.driver FROM activity a WHERE a.activity_id=%s', [activity_id])
-                driver, end_time = cursor.fetchone()
+                driver = cursor.fetchone()
 
-                if end_time < datetime.datetime.now():
-                    has_passed = True
-
-            context["has_passed"] = has_passed
             context["passengers"] = passengers
             context["driver"] = driver
             return render(request, 'passengers.html', context)
