@@ -373,15 +373,14 @@ def passenger(request, activity_id):
                 passengers = cursor.fetchall()
 
                 cursor.execute(
-                    'SELECT a.activity_name,a.driver FROM activity a WHERE a.activity_id=%s', [activity_id])
-                activity_name, driver, end_time = cursor.fetchone()
+                    'SELECT a.driver FROM activity a WHERE a.activity_id=%s', [activity_id])
+                driver, end_time = cursor.fetchone()
 
                 if end_time < datetime.datetime.now():
                     has_passed = True
 
             context["has_passed"] = has_passed
             context["passengers"] = passengers
-            context["activity_name"] = activity_name
             context["driver"] = driver
             return render(request, 'passengers.html', context)
         else:
