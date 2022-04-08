@@ -377,7 +377,7 @@ def passenger(request, activity_id):
 
             context["passengers"] = passengers
             context["driver"] = driver
-            return render(request, 'passengers.html', context)
+            return render(request, 'passenger.html', context)
         else:
             message="You are not registered for this activity, hence you are not authorised to view this page."
             return index(request,message)
