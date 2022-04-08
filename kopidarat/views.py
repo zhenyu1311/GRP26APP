@@ -226,17 +226,17 @@ def user_activity(request):
             ])
             driver_list = cursor.fetchall()
 
-            # Get the table of upcoming activities created by other user where the user has signed up for
+            # Get the table of upcoming rides created by other user where the user has signed up for
             cursor.execute('SELECT a.activity_id, u.full_name, a.price, a.start_point, a.start_date_time, a.destination FROM joins j, activity a, users u WHERE j.activity_id = a.activity_id AND a.driver = u.email AND a.driver <> j.passenger AND j.passenger = %s AND NOW() <= a.start_date_time ORDER BY a.start_date_time ASC', [
                 user_email
             ])
-            upcoming_activities_list = cursor.fetchall()
+            upcoming_rides_list = cursor.fetchall()
 
-            # Get the table of past activities created by other user where the user has joined
+            # Get the table of past rides created by other user where the user has joined
             cursor.execute('SELECT a.activity_id, u.full_name, a.price, a.start_point, a.start_date_time, a.destination FROM joins j, activity a, users u WHERE j.activity_id = a.activity_id AND a.driver = u.email AND a.driver <> j.passenger AND j.passenger = %s AND NOW() > a.start_date_time ORDER BY a.start_date_time ASC', [
                 user_email
             ])
-            joined_activities_list = cursor.fetchall()
+            joined_rides_list = cursor.fetchall()
 
             # Get table of reviews that user has created
             cursor.execute('SELECT a.activity_id, r.timestamp, r.comment FROM review r, activity a, users u WHERE r.activity_id = a.activity_id AND r.passenger = u.email AND r.passenger = %s ORDER BY a.start_date_time ASC', [
@@ -244,7 +244,7 @@ def user_activity(request):
             ])
             reviews_list = cursor.fetchall()
 
-            # Get table of reviews that user has created
+            # Get table of reports that user has created
             cursor.execute('SELECT r.timestamp, r.report_user, r.comment, r.severity FROM report r, users u WHERE r.report_user = u.email AND r.submitter = %s ORDER BY r.timestamp ASC', [
                 user_email
             ])
@@ -262,8 +262,8 @@ def user_activity(request):
         context['user_fullname'] = request.session.get('full_name')
         context['past_driver_list'] = past_driver_list
         context['driver_list'] = driver_list
-        context['upcoming_activities_list'] = upcoming_activities_list
-        context['joined_activities_list'] = joined_activities_list
+        context['upcoming_rides_list'] = upcoming_rides_list
+        context['joined_rides_list'] = joined_rides_list
         context['reviews_list'] = reviews_list
         context['reports_list'] = reports_list
         # context['list_of_rated_activities'] = list_of_rated_activities

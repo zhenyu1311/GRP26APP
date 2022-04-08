@@ -37,7 +37,7 @@
         <th>Capacity</th>
         <th>Passengers List</th>
       </thead>
-      {% for activity in past_inviter_list %}
+      {% for activity in past_driver_list %}
       <tr>
         <td>{{ activity.0 }}</td>
         <td>{{ activity.1 }}</td>
@@ -75,7 +75,7 @@
         <th>Edit Ride</th>
         <th>Passengers List</th>
       </thead>
-      {% for activity in inviter_list %}
+      {% for activity in driver_list %}
       <tr>
         <td>{{ activity.0 }}</td>
         <td>{{ activity.1 }}</td>
@@ -120,14 +120,14 @@
         <th>Start Date Time</th>
         <th>Delete Ride</th>
       </thead>
-      {% for activity in upcoming_activities_list %}
+      {% for activity in upcoming_rides_list %}
       <tr>
         <td>{{ activity.0 }}</td>
         <td>{{ activity.1 }}</td>
-        <td>{{ activity.5 }}</td>
         <td>{{ activity.2 }}</td>
-        <td>{{ activity.4 }}</td>
         <td>{{ activity.3 }}</td>
+        <td>{{ activity.5 }}</td>
+        <td>{{ activity.4 }}</td>
         <td>
           <a
             class="button"
@@ -154,14 +154,14 @@
         <th>Start Date Time</th>
         <th>Review</th>
       </thead>
-      {% for activity in joined_activities_list %}
+      {% for activity in joined_rides_list %}
       <tr>
         <td>{{ activity.0 }}</td>
         <td>{{ activity.1 }}</td>
-        <td>{{ activity.5 }}</td>
         <td>{{ activity.2 }}</td>
-        <td>{{ activity.4 }}</td>
         <td>{{ activity.3 }}</td>
+        <td>{{ activity.5 }}</td>
+        <td>{{ activity.4 }}</td>
         <td>
           <a
             class="button"
@@ -188,7 +188,7 @@
       <tr>
         <td>{{ review.0 }}</td>
         <td>{{ review.1 }}</td>
-        <td>{{ review.4 }}</td>
+        <td>{{ review.2 }}</td>
       </tr>
       {% endfor %}
     </table>
